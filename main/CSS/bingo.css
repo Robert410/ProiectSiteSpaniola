@@ -1,0 +1,260 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background: bisque;
+    opacity: 0.8;
+}
+
+#frame
+{
+    background:#FFFFFF;
+    width: 65vw;
+    height: 85vh;
+    border-radius: 3%;
+    border: 0.2vh solid black;
+    padding: 1vh;
+    margin-left: 25vw;
+    margin-top: 7vh;
+}
+
+
+.slant {
+	-moz-transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-60deg, 0deg);
+	-webkit-transform: scale(1) rotate(0deg) translate(0px, 0px)
+	  skew(-60deg, 0deg);
+	-o-transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-60deg, 0deg);
+	-ms-transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-60deg, 0deg);
+	transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-30deg, -4deg);
+  }
+  
+  .slant1 {
+	-moz-transform: scale(1) rotate(0deg) translate(0px, 10px) skew(-60deg, 0deg);
+	-webkit-transform: scale(1) rotate(0deg) translate(0px, 0px)
+	  skew(-60deg, 0deg);
+	-o-transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-60deg, 0deg);
+	-ms-transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-60deg, 0deg);
+	transform: scale(2) rotate(10deg) translate(10px, 0px) skew(-10deg, -4deg);
+	left: 4vw;
+  }
+  
+  a {
+	position: fixed;
+	text-transform: uppercase;
+	text-decoration: none;
+	width: 14.5%;
+	height: 5vh;
+	left: 0;
+	top: 0;
+	overflow: hidden;
+	text-align: center;
+	display: inline-block;
+	z-index: 999;
+  }
+  
+  a span {
+	position: fixed;
+	left: 5%;
+	z-index: 1;
+	color: white;
+	font-size: 3vh;
+	z-index: 999;
+  }
+  
+  .imgg {
+	width: 15%;
+	height: 20%;
+	position: fixed;
+	left: 0px;
+	z-index: 999;
+  }
+  
+  .GR {
+	position: fixed;
+	left: 5%;
+	top: 85%;
+	width: 5%;
+	height: 5%;
+	background-color: azure;
+	text-align: center;
+	border-radius: 50%;
+	z-index: 9998;
+  }
+  .buton {
+	width: 5%;
+	height: 10%;
+	position: fixed;
+	left: 5%;
+	top: 86%;
+	z-index: 999;
+  }
+  
+  .close {
+	position: fixed;
+	left: 5%;
+	width: 5%;
+	height: 5%;
+	top: 92%;
+	text-align: center;
+	z-index: 999;
+  }
+  
+  .middle1 {
+	vertical-align: middle;
+	padding: 0px;
+	margin-top: 13%;
+  }
+  
+  .desen {
+	color: #000;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	text-decoration: none;
+	transition: 0.5s;
+	height: 8vh;
+	width: 16vw;
+  }
+  
+  .desen:before {
+	content: "";
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background: url("imagini-butoane/desen2.png");
+	background-size: cover;
+	border-radius: 10%;
+  }
+
+.titlu-Bingo
+{
+     color:#FFFFFF;
+     margin-bottom:0px;
+     font-family:Tempus Sans ITC;
+     background:red;
+     font-size: 2.5vh;
+     opacity:0.9;
+     font-weight:normal;
+     border-bottom:0.2vh solid black;
+     width: 11vw;
+     padding-left: 3vw;
+     padding-top:1vw;
+     padding-bottom:1vw;
+     margin-left: 0.5vw;
+}
+.num
+{
+    background:#ece4e6;
+    width:5vh;
+    height:5vh;
+    margin-left: 1vh;
+    margin-top: 1vh;
+    font-weight:bold;
+    padding: 2vh;
+    border: 0.2vh solid black;
+    font-size: 2vh;
+}
+.num-style
+{
+    width: 8vw;
+    height: 8vh;
+    float:left;
+    text-align:center;
+    border: 0.2vh solid whitesmoke;
+    background:#627A66;
+    color:black;
+    border-color:whitesmoke;
+    z-index:4;
+    font-size: 2.5vh;
+}
+#poll
+{
+    width: 47vw;
+    height: 80%;
+    background:#FFFFFF;
+    padding: 2vh;
+    padding-top: 2.5vh;
+    overflow-y:scroll;
+    border:0.2vh solid black;
+    margin-left: 1vw;
+}
+#frame-poll
+{
+    float:left;
+}
+#card
+{
+    margin-left:0px;
+    float:left;
+    width: 15vw;
+    margin-top:4vh;
+}
+#IsBingo
+{
+    width: 15vh;
+    height: 15vh;
+    border-radius:50%;
+    border: 0.2vh solid #000000;
+    font-family: Verdana;
+    font-size:3vh;
+    font-weight:bold;
+    padding: 2vh;
+    color:#000000;
+    margin: 5vh;
+}
+h4{
+    font-family: Tahoma;
+    margin-left:0.4vh;
+    border-bottom:0px;
+    color:#000;
+    font-size: 3vh;
+    font-weight:bold;
+    margin-bottom:1vh;
+}
+
+.Buton-Bingo{
+    transform: translateX(150%);
+    width: 10vw;
+    height: 6vh;
+    font-size: 2.5vh;
+}
+
+.indicatii{
+  font-size: 3vh;
+  position: absolute;
+  padding: 4vh;
+  display: block;
+  width: 45vw;
+}
+
+.indicatii h2{
+  margin-left: 15vw;
+}
+
+.indicatii p{
+  text-indent: 4vh;
+  margin-top: 5vh;
+}
+
+.bingogresit{
+  position: absolute;
+  left: 28vw;
+  font-size: 3vh;
+  width: 13vw;
+  bottom: 18vh;
+  color: red;
+  display: none;
+}
+
+.bingocorect{
+  position: absolute;
+  left: 28vw;
+  font-size: 3vh;
+  width: 13vw;
+  bottom: 18vh;
+  color: green;
+  display: none;
+}

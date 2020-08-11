@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Main</title>
+	<link rel="stylesheet" href="CSS/animationbackground.css">
+	<link rel="stylesheet" href="CSS/style.css">
+	<link rel="stylesheet" href="CSS/style_quiz.css">
+	<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+		integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous" />
+	<script src="JS/functii.js"></script>
+	<script type="text/javascript" src="JS/main.js"></script>
+</head>
+
+<!-- script for WEBSOCKETS -->
+<script>
+	let debugWithoutWS = true;
+	let consoleMode = false;
+
+	if (!debugWithoutWS) {
+		var ws = new WebSocket("ws://localhost:8080/proiect_site_spaniola_war_exploded/ws");
+
+		ws.onmessage = function (event) {
+			console.log(event.data);
+			if (consoleMode) document.getElementById("log").value += event.data + "\n";
+			code = event.data.toString().substr(0, 2);
+			value = event.data.toString().substr(2);
+
+			if (code === "ID") {
+				globalID = value;
+				updateGlobal();
+			} else
+				if (code === "XX") {
+					redirectToLogin();
+				}
+		}
+	}
+
+	window.onload = function() {
+		if (getSessionData("username").length < 4) redirectToLogin();
+		if (consoleMode) {
+			document.getElementById("log").value += getSessionKeyData() + isMaster() + getSessionData("job") + "#" + "\n";
+			document.getElementById("log").style.display = "inline-block";
+			document.getElementById("input").style.display = "inline-block";
+		}
+		else {
+			document.getElementById("log").style.display = "none";
+			document.getElementById("input").style.display = "none";
+		}
+		if (!debugWithoutWS) ws.send("*" + getSessionKeyData());
+		if (isMaster()) {
+			document.getElementById("GRinput").style.display = "none";
+		}
+	}
+
+</script>
+<!-- DEBUG CONSOLE: html for debug purposes only -->
+<textarea title="Chat Log" id="log" readonly
+	style="display: none; width: 100%; height: 100px; resize: none; margin: 0; padding: 0; border: 0;"> </textarea>
+<input title="Chat Input" id="input" type="text" style="display: none; width: 100%; border-width: 1px 0 1px 0;"
+	autofocus />
+
+<!-- script for the DEBUG CONSOLE -->
+<script>
+	document.getElementById("input").addEventListener("keyup", function (event) {
+		if (event.keyCode === 13) {
+			ws.send(event.target.value);
+			event.target.value = "";
+		}
+	});
+</script>
+
+<body>
+	<div id="warning-message">
+		acest site este disponibil doar in modul peisaj
+  	</div>
+
+	<div id="wrapper">
+		<div class="containershow">
+			<div class="blank" id="main" style="background-color: #3B4542;">
+				<div class="animation-pane">
+					<ul class="box-anim">
+						<li></li>
+						<li></li>
+						<li></li>
+						<li></li>
+						<li></li>
+						<li></li>
+						<li></li>
+						<li></li>
+						<li></li>
+						<li></li>
+						<li></li>
+						<li></li>
+					</ul>
+				</div>
+				<h1 class="titlu">Bun venit în lumea noastră</h1>
+				<section>
+					<div class="cube">
+						<div>
+							<span><img src="imagini/imagini-slideshow/1.jpg"></span>
+							<span><img src="imagini/imagini-slideshow/2.jpg"></span>
+							<span><img src="imagini/imagini-slideshow/3.jpg"></span>
+						</div>
+					</div>
+				</section>
+				<!-- navbar -->
+				<a style="top: 2vh; left: 0;" href="main.html" class="navbar">
+					<!-- <span class="slant1" style="color: white;">HOME</span> -->
+					<img src="imagini/imagini-butoane/main_umplut.png"
+						style=" width: 100%; height: 100%; height: 15vh; width: 10vw;">
+				</a>
+
+				<a style="top: 66vh; height: 16%;" href="inv.html" class="navbar">
+					<!-- <span style="font-size: 4vh;" class="slant">Learn</span> -->
+					<img src="imagini/imagini-butoane/learn_umplut.png"
+						style=" width: 100%; height: 100%; height: 15vh; width: 10vw;">
+				</a>
+				<div style="list-style-type: none;z-index: 999;">
+					<a href="harti.html" class="imgg" style="top: 18vh;">
+						<img src="imagini/imagini-butoane/spania_umplu.png"
+							style=" width: 100%; height: 100%; height: 15vh; width: 10vw;">
+					</a>
+					<a href="bingo.html" class="imgg" style="top: 34vh;">
+						<img src="imagini/imagini-butoane/bingo_umplut.png"
+							style=" width: 100%; height: 100%; height: 15vh; width: 10vw;">
+					</a>
+					<a href="principal_quiz.html" class="imgg" style=" top: 50vh;">
+						<img src="imagini/imagini-butoane/quiz_umplut.png"
+							style=" width: 100%; height: 100%; height: 15vh; width: 10vw;">
+					</a>
+
+					<!-- <button type="button" class="buton" onclick="openForm()" id="removee">GR</button> -->
+					<!-- <img class="buton" onclick="openForm()" id="removee" src="imagini/imagini-butoane/room_umplut.png"
+    style=" height: 16vh; width: 10vw;"></img>
+    <div style="display: none;z-index: 999;"id="myForm">
+        <li class="GR">
+        <div class="middle1"; id="gameroomIDUI"><input class="inputu"; id="GRinput"></div>
+        </li>
+        <button class="close" onclick="closeForm()">Enter</button>
+    </div>
+</div> -->
+					<div class="scrisvertical">HOME</div>
+					<div class="scrisvertical" style="top: 20vh;">HARTI</div>
+					<div class="scrisvertical" style="top: 36vh;">BINGO</div>
+					<div class="scrisvertical" style="top: 53vh;">QUIZ</div>
+					<div class="scrisvertical" style="top: 68vh;">LEARN</div>
+					<!-- SFARSIT NAVBAR  -->
+					<!-- <a href="#detalii" class="minunat">detalii</a> -->
+					<!-- <a href="#contacte" class="minunat1">contacte</a> -->
+					<a href="#contacte" class="contactebuton">
+						<span></span>
+						<span></span>
+						<span></span>
+						<span></span>
+						Contacte
+					</a>
+					<a href="#detalii" class="contactebuton" style="bottom: 15vh;">
+						<span></span>
+						<span></span>
+						<span></span>
+						<span></span>
+						detalii
+					</a>
+
+				</div>
+				<div id="detalii" style="background-color: #3B4542;" class="blank">
+					<div class="animation-pane">
+						<ul class="box-anim">
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</div>
+					<div class="box">
+						<i class="fa fa-quote-left fa2" aria-hidden="true"></i>
+						<div class="comp">
+							<i class="fa fa-quote-right fa1" aria-hidden="true"></i>
+							<div>
+								<p>
+									Spaniola ocupă locul doi în topul celor mai studiate limbi din lume, astfel
+									ajungând să fie și una dintre cele mai vorbite limbi. Aceasta este vorbită atât în
+									Europa, cât și în America Latină, acoperind o mare parte din planetă. Noi
+									încurajam studierea acestei limbi, atât pentru utilitatea ei pe plan mondial, cât
+									și pentru cultura despre care ajungi să înveți odată cu aprofundarea limbii.
+									<p style="margin-top: 5%;">
+									"Întregul scop al educației este să transforme oglinzile în ferestre."
+									</p><p style="margin-top: 0; margin-left: 25vw;"> 
+									(Sydney J. Harris)</p>
+								</p>
+							</div>
+						</div>
+					</div>
+
+					<a href="#main" class="aranjs">
+						<img src="imagini/imagini-butoane/sageata.png" class="dimensiune" type="button"></a>
+				</div>
+				<div id="contacte" style="background-color: green;" class="blank">
+					<div class="animation-pane">
+						<ul class="box-anim">
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</div>
+					<div class="card">
+						<input type="checkbox" name="">
+						<div class="toggle">
+							+
+						</div>
+						<div class="imgBX">
+							<img src="imagini/imagini-slideshow/poster01.jpg" class="fix">
+						</div>
+						<div class="content">
+							<h1>Robert</h1>
+							<hr>
+							<p>- vorbăreț -</p>
+							<p>- curios -</p>
+							<p>- este o oaie -</p>
+							<p style="font-size: 2.7vh;"><i>roberthostiuc@gmail.com</i></p>
+						</div>
+					</div>
+
+					<div class="card" style="margin-left: 45vw; top: 20vh;">
+						<input type="checkbox" name="">
+						<div class="toggle">
+							+
+						</div>
+						<div class="imgBX">
+							<img src="imagini/imagini-slideshow/poster02.jpg" class="fix">
+						</div>
+						<div class="content">
+							<h1>Gabi</h1>
+							<hr>
+							<p style="line-height: 5vh;">- fost elev -</p>
+							<p>- om cu speranța să fie viitor student -</p>
+							<p style="line-height: 7vh; font-size: 2.7vh;"><i>gabymeow07@gmail.com</i></p>
+						</div>
+					</div>
+
+					<div class="card" style="margin-left: 72vw; top: 20vh;">
+						<input type="checkbox" name="">
+						<div class="toggle">
+							+
+						</div>
+						<div class="imgBX">
+							<img src="imagini/imagini-slideshow/poster03.jpg" style="width: 100%; height: 100%;">
+						</div>
+						<div class="content">
+							<h1>Daniel</h1>
+							<hr>
+							<p>- entuziast -</p>
+							<p>- doritor de provocări -</p>
+							<p>- îi plac rațele -</p>
+							<p style="font-size: 2.7vh;"><i>daniel16todasca@gmail.com</i></p>
+						</div>
+					</div>
+					<a href="#main" class="aranjs">
+						<img src="imagini/imagini-butoane/sageata.png" class="dimensiune" type="button">
+					</a>
+				</div>
+			</div>
+		</div>
+</body>
+
+</html>

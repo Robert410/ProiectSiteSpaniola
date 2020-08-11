@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset = "UTF-8">
+    <meta name = "viewport" content = "width=device-width, initial-scale=1.0">
+    <meta http-equiv = "X-UA-Compatible" content = "ie=edge">
+    <link rel = "stylesheet" href = "CSS/login.css">
+
+    <title> Log-in </title>
+
+    <script src = "JS/functii.js"> </script>
+
+    <!-- script for WEBSOCKETS -->
+    <script>
+        let debugWithoutWS = true;
+        let consoleMode = true;
+
+        if (!debugWithoutWS) {
+            var ws = new WebSocket("ws://localhost:8080/proiect_site_spaniola_war_exploded/ws");
+
+            ws.onmessage = function (event) {
+                console.log(event.data);
+                document.getElementById("log").value += event.data + "\n";
+                code = event.data.toString().substr(0, 2);
+                value = event.data.toString().substr(2);
+                if (code === "LP") {
+                    document.getElementById("userName").innerHTML = value;
+                    if (selectedJob === false) player();
+                    else master();
+                }   else if (code === "LN") {
+                    var text = document.getElementById("text_explanation");
+                    text.innerHTML = "Numele tau este ales deja! :( Incearca altul!";
+                    text.style.color = "#ff0000";
+                }
+            }
+        }
+    </script>
+
+    <!-- DEBUG CONSOLE: html for debug purposes only -->
+    <textarea title="Chat Log" id="log" readonly
+              style="display: none; width: 100%; height: 100px; resize: none; margin: 0; padding: 0; border: 0;"> </textarea>
+    <input title="Chat Input" id="input" type="text" style="display: none; width: 100%; border-width: 1px 0 1px 0;" autofocus/>
+
+    <!-- script for the DEBUG CONSOLE -->
+    <script>
+        document.getElementById("input").addEventListener("keyup", function (event) {
+            if (event.keyCode === 13) {
+                ws.send(event.target.value);
+                event.target.value = "";
+            }
+        });
+    </script>
+
+</head>
+<body>
+<div id="warning-message">
+    acest site este disponibil doar in modul peisaj
+</div>
+
+    <div id="wrapper">
+        <div class="container">
+             <div class="form">
+                 <h2> Login </h2>
+
+                 <form id="form">
+                     <div class="inputbox">
+                         <input type="text" name="" placeholder="Introdu un nume de utilizator..." id="userName">
+                         <span id="text"> </span>
+                     </div>
+                 </form>
+
+                 <div class="inputbox">
+                     <h3 style="color: white;"> Selectează-ți rolul: </h3>
+                 </div>
+
+                 <div class="inputbox">
+                     <div id="text_explanation"; display="block"> </div>
+                     <button style="margin-left: -23vw;" onclick = "playerPress()"> Elev </button>
+                     <button style="margin-left: 3vw;"   onclick = "masterPress()"> Profesor </button>
+                 </div>
+
+             </div>
+        </div>
+    </div>
+
+    <script>
+    let isNameValid = false;
+    let selectedJob = false;
+    function validatePress() {
+        var status = document.getElementById("userName").value;
+        ws.send("A%" + status);
+    }
+    function playerPress() {
+        if (debugWithoutWS) {
+            player();
+            return;
+        }
+        selectedJob = false;
+        validatePress();
+    }
+    function masterPress() {
+        if (debugWithoutWS) {
+            master();
+            return;
+        }
+        selectedJob = true;
+        validatePress();
+    }
+
+    function validateName() {
+        var text  = document.getElementById("text_explanation");
+        var status = document.getElementById("userName").value.toString();
+        status = status.trim();
+        var n = status.length;
+        if (n >= 20) {
+            text.innerHTML   = "Numele tau este prea lung! Te rugam sa folosesti mai putin de 20 de caractere. (5-19)";
+            text.style.color = "#ff0000";
+            isNameValid = false;
+        }   else
+        if(n <= 4) {
+            text.innerHTML   = "Numele tau este prea scurt! Te rugam sa folosesti mai mult de 4 caractere. (5-19)";
+            text.style.color = "#ff0000";
+            isNameValid = false;
+        }
+        else {
+            for (let i=0; i<n; ++i) {
+                if (!(status.charAt(i) === ' ' || status.charAt(i).match(/^[a-z0-9]+$/i))) {
+                    isNameValid = false;
+                    text.innerHTML = "Numele tau NU este valid! Te rugam sa folosesti caractere alfanumerice sau spatii. (a-z, A-Z, 0-9)";
+                    text.style.color = "#ff0000";
+                    return;
+                }
+            }
+
+            isNameValid = true;
+            text.innerHTML = "";
+        }
+    }
+
+    function player() {
+        validateName();
+        if(isNameValid) {
+            setPlayerName(document.getElementById("userName").value.toString().trim());
+            setPlayer();
+            setSessionData("username", document.getElementById("userName").value.toString().trim());
+            window.location = "main.html";
+        }
+    }
+    function master() {
+        validateName();
+        if(isNameValid) {
+            setMasterName(document.getElementById("userName").value.toString().trim());
+            setMaster();
+            window.location = "main.html";
+        }
+    }
+    </script>
+
+</body>
+</html>

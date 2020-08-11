@@ -1,0 +1,317 @@
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	padding: 0%;
+	width: 100vw;
+	height: 100vh;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 1vw;
+	box-sizing: border-box;
+	max-width: 100%;
+}
+
+#rankingUIText {
+	padding-left:50%;
+	top:0;
+	font-size: 4em;
+	color: brown;
+}
+
+#warning-message { display: none;
+	margin: 20%;
+	font-size: 8vh;
+	color: white;
+}
+
+@media only screen and (orientation:portrait){
+
+	#wrapper { display:none;
+		margin: 0;
+		padding: 0;
+	}
+	#warning-message { display:block; }
+
+}
+
+@media only screen and (orientation:landscape){
+
+	#warning-message { display:none; }
+
+}
+
+
+.map__imag{
+	width: 60%;
+	margin-left: 20vw;
+	margin-top: 15vh;
+
+}
+
+.imaghrt{
+	position: fixed;
+	top: 60vh;
+	left: 12vw;
+	z-index: 3;
+	width: 40vw;
+	height: 20vh;
+}
+
+.gaseste{
+	position: absolute;
+	left: 47vw;
+	top: 5vh;
+	color: white;
+	font-size: 3.5vh;
+}
+
+.map__imag path{
+	fill: green;
+	stroke: black;
+	stroke-width: 1px;
+	transition: fill 0.3s;
+	bottom: 5vh;
+}
+
+/* .map__imag path:hover{
+ fill: white;
+} */
+
+/* NAVBAR STANGA */
+.slant {
+	-moz-transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-60deg, 0deg);
+	-webkit-transform: scale(1) rotate(0deg) translate(0px, 0px)
+	skew(-60deg, 0deg);
+	-o-transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-60deg, 0deg);
+	-ms-transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-60deg, 0deg);
+	transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-30deg, -4deg);
+}
+
+.slant1 {
+	-moz-transform: scale(1) rotate(0deg) translate(0px, 10px) skew(-60deg, 0deg);
+	-webkit-transform: scale(1) rotate(0deg) translate(0px, 0px)
+	skew(-60deg, 0deg);
+	-o-transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-60deg, 0deg);
+	-ms-transform: scale(1) rotate(0deg) translate(0px, 0px) skew(-60deg, 0deg);
+	transform: scale(2) rotate(10deg) translate(10px, 0px) skew(-10deg, -4deg);
+	left: 4vw;
+}
+
+a {
+	position: fixed;
+	text-transform: uppercase;
+	text-decoration: none;
+	width: 14.5%;
+	height: 5vh;
+	left: 0;
+	top: 0;
+	overflow: hidden;
+	text-align: center;
+	display: inline-block;
+	z-index: 999;
+}
+
+a span {
+	position: fixed;
+	left: 5%;
+	z-index: 1;
+	color: white;
+	font-size: 3vh;
+	z-index: 999;
+}
+
+.imgg {
+	width: 15%;
+	height: 20%;
+	position: fixed;
+	left: 0px;
+	z-index: 999;
+}
+
+.GR {
+	position: fixed;
+	left: 5%;
+	top: 85%;
+	width: 5%;
+	height: 5%;
+	background-color: azure;
+	text-align: center;
+	border-radius: 50%;
+	z-index: 9998;
+}
+.buton {
+	width: 5%;
+	height: 10%;
+	position: fixed;
+	left: 5%;
+	top: 86%;
+	z-index: 999;
+}
+
+.close {
+	position: fixed;
+	left: 5%;
+	width: 5%;
+	height: 5%;
+	top: 92%;
+	text-align: center;
+	z-index: 999;
+}
+
+.middle1 {
+	vertical-align: middle;
+	padding: 0px;
+	margin-top: 13%;
+}
+
+.desen {
+	color: #000;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	text-decoration: none;
+	transition: 0.5s;
+	height: 8vh;
+	width: 16vw;
+}
+
+.desen:before {
+	content: "";
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background: url("imagini-butoane/desen2.png");
+	background-size: cover;
+	border-radius: 10%;
+}
+/* SFARSIT NAVBAR */
+.corectfals{
+	position: absolute;
+	left: 85vw;
+	top: 82vh;
+	font-size: 7vh;
+	color: white;
+}
+
+.animateDescriptor {
+	animation: fadeinout 0.4s linear 1;
+}
+@keyframes fadeinout {
+	from { color: #000000; }
+	50% {color: #00FF00; }
+	75% {color: #00FF00; }
+	to { color : white;}
+}
+.animateDescriptor1 {
+	animation: fadeinout1 0.4s linear 1;
+}
+@keyframes fadeinout1 {
+	from { color: #000000; }
+	50% {color: red }
+	75% {color: red }
+	to { color : white;}
+}
+
+
+.butonstart{
+	position: absolute;
+	top: 40vh;
+	left: 40vw;
+	width: 10vw;
+	height: 10vh;
+}
+.noselect {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+.butonrezultate{
+	position: absolute;
+	left: 20vw;
+	top: 30vh;
+	width: 10vw;
+	height: 10vh;
+	background: linear-gradient(#F9A59E,#8A1116,#D42732);
+	border: 0;
+	border-radius: 50%;
+	display: none;
+}
+.butonrestart{
+	position: absolute;
+	left: 20vw;
+	top: 60vh;
+	width: 10vw;
+	height: 10vh;
+	display: none;
+}
+.borderBox{
+	left: 40vw;
+	top: 30vh;
+	border: none;
+	display: block;
+	position: absolute;
+	padding: 2vh 6vh;
+	font-size: 3vh;
+	background: transparent;
+	cursor: pointer;
+	user-select: none;
+	display: none;
+}
+
+.textBox{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background: transparent;
+	z-index: -1;
+	border: 1vh solid white;
+}
+
+.textBox::before{
+	content: "";
+	position: absolute;
+	width: 8%;
+	height: 500%;
+	background: #112F68;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%,-50%) rotate(-60deg);
+}
+
+.leaderboard{
+	height: 80vh;
+	width: 40vw;
+	position: absolute;
+	left: 40vw;
+	top: 5vh;
+	display: none;
+}
+
+.pergament{
+	width: 100%;
+	height: 100%;
+}
+
+.leadertext{
+	position: absolute;
+	left: 27%;
+	top: 17%;
+	font-family: arial;
+	font-size: 3.5vh;
+}
+.scorprogres{
+	position: absolute;
+	left: 90vw;
+	top: 40vh;
+	font-size: 4vh;
+	color: white;
+}

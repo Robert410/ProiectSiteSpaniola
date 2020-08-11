@@ -1,0 +1,181 @@
+<html>
+
+<meta charset="utf-8">
+
+<link rel="stylesheet" type="text/css" href="CSS/bingo.css" />
+<link rel="stylesheet" href="CSS/style.css" />
+<script src="JS/functii.js"></script>
+<title>Bingo</title>
+<script type="text/javascript" src="JS/main.js"></script>
+<script type="text/javascript" src="JS/functii.js"></script>
+<script type="text/javascript" src="JS/bingo.js"></script>
+
+<textarea title="Chat Log" id="log" readonly
+          style="display: none; width: 100%; height: 100px; resize: none; margin: 0; padding: 0; border: 0;"> </textarea>
+<input title="Chat Input" id="input" type="text" style="display: none; width: 100%; border-width: 1px 0 1px 0;" autofocus/>
+
+<script>
+    let debugWithoutWS = true;
+    let consoleMode = false;
+
+    if (!debugWithoutWS) {
+        var ws = new WebSocket("ws://localhost:8080/proiect_site_spaniola_war_exploded/ws");
+
+        ws.onmessage = function (event) {
+            console.log(event.data);
+            if (consoleMode) document.getElementById("log").value += event.data + "\n";
+            code = event.data.toString().substr(0, 2);
+            value = event.data.toString().substr(2);
+
+            if (code === "ID") {
+                globalID = value;
+                updateGlobal();
+            } else if (code === "QB") {
+                let arr = value.split("#");
+                for (let i=1; i<=16; ++i)
+                    anum[i] = parseInt(arr[i-1]);
+                randomizer = new Array();
+                for (let i=16; i<arr.length; ++i)
+                    randomizer.push(numere[parseInt(arr[i])-1]);
+                startBingo();
+            } else if (code === "QF") {
+                endBingo();
+                document.getElementById('poll').innerHTML = value;
+            } if (code === "XX") {
+                redirectToLogin();
+            } else
+            if (code === "PP") {
+                showInformation(value);
+            }
+        }
+
+        document.getElementById("input").addEventListener("keyup", function (event) {
+            if (event.keyCode === 13) {
+                ws.send(event.target.value);
+                event.target.value = "";
+            }
+        });
+    }
+
+    window.onload = function() {
+        if (getSessionData("username").length < 4) redirectToLogin();
+        if (consoleMode) {
+            document.getElementById("log").value += getSessionKeyData() + isMaster() + getSessionData("job") + "#" + "\n";
+            document.getElementById("log").style.display = "inline-block";
+            document.getElementById("input").style.display = "inline-block";
+        }
+        else {
+            document.getElementById("log").style.display = "none";
+            document.getElementById("input").style.display = "none";
+        }
+        if (!debugWithoutWS) {
+            ws.send("*" + getSessionKeyData());
+            ws.send("%" + "bingo");
+        }
+        if (isMaster()) {
+            document.getElementById("GRinput").style.display = "none";
+        }
+    }
+
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+<body style="overflow: hidden;">
+    <div id="warning-message">
+        acest site este disponibil doar in modul portret
+    </div>
+    <div id="wrapper">
+        <div id="comentarii" class="comentariu">
+            <img src="imagini/imagini-butoane/blankcolor.png" style="width: 800%; height: 100%;">
+            <p id="comentariitext">this website is only viewable in landscape mode</p>
+        </div>
+        <!-- navbar -->
+        <a style="top: 2vh; left: 0;" href="main.html" class="navbar">
+            <!-- <span class="slant1" style="color: white;">HOME</span> -->
+            <img src="imagini/imagini-butoane/main_umplut.png" style=" width: 100%; height: 100%; height: 15vh; width: 10vw;">
+        </a>
+
+        <a style="top: 66vh; height: 16%;" href="inv.html" class="navbar">
+            <!-- <span style="font-size: 4vh;" class="slant">Learn</span> -->
+            <img src="imagini/imagini-butoane/learn_umplut.png" style=" width: 100%; height: 100%; height: 15vh; width: 10vw;">
+        </a>
+        <div style="list-style-type: none;z-index: 999;">
+            <a href="harti.html" class="imgg" style="top: 18vh;">
+                <img src="imagini/imagini-butoane/spania_umplu.png"
+                    style=" width: 100%; height: 100%; height: 15vh; width: 10vw;">
+            </a>
+            <a href="bingo.html" class="imgg" style="top: 34vh;">
+                <img src="imagini/imagini-butoane/bingo_umplut.png"
+                    style=" width: 100%; height: 100%; height: 15vh; width: 10vw;">
+            </a>
+            <a href="principal_quiz.html" class="imgg" style=" top: 50vh;">
+                <img src="imagini/imagini-butoane/quiz_umplut.png"
+                    style=" width: 100%; height: 100%; height: 15vh; width: 10vw;">
+            </a>
+            <a href="#">
+                <img class="buton" onclick="openForm()" id="removee" src="imagini/imagini-butoane/room_umplut.png"
+                    style=" height: 16vh; width: 10vw;"></img></a>
+            <div style="display: none;z-index: 999;" id="myForm">
+                <li class="GR">
+                    <!--<div class="middle1"; id="gameroomIDUI"><input class="inputu"; id="GRinput"></div>-->
+                    <div id="gameroomIDUI"><input class="inputu"; id="GRinput"></div>
+                </li>
+                <button class="close" onclick="closeForm()">Enter</button>
+            </div>
+        </div><div class="scrisvertical">HOME</div>
+        <div class="scrisvertical" style="top: 20vh;">HARTI</div>
+        <div class="scrisvertical" style="top: 36vh;">BINGO</div>
+        <div class="scrisvertical" style="top: 53vh;">QUIZ</div>
+        <div class="scrisvertical" style="top: 68vh;">LEARN</div>
+        <div class="scrisvertical" style="top: 85vh;">ROOM</div>
+        <div class="scrisvertical" style="top: 82vh; left: 5vw; writing-mode: horizontal-tb">GAME</div>
+        <!-- SFARSIT NAVBAR  -->
+        <div id="frame">
+            <div id="card">
+                <h2 class="titlu-Bingo">Bingo</h2>
+                <div id="tabel-Bingo">
+                    <div class="num" id="num1" style="float:left;"></div>
+                    <div class="num" id="num2" style="float:left;"></div>
+                    <div class="num" id="num3" style="float:left;"></div>
+                    <div class="num" id="num4" style="float:left;"></div>
+                    <div class="num" id="num5" style="float:left;"></div>
+                    <div class="num" id="num6" style="float:left;"></div>
+                    <div class="num" id="num7" style="float:left;"></div>
+                    <div class="num" id="num8" style="float:left;"></div>
+                    <div class="num" id="num9" style="float:left;"></div>
+                    <div class="num" id="num10" style="float:left;"></div>
+                    <div class="num" id="num11" style="float:left;"></div>
+                    <div class="num" id="num12" style="float:left;"></div>
+                    <div class="num" id="num13" style="float:left;"></div>
+                    <div class="num" id="num14" style="float:left;"></div>
+                    <div class="num" id="num15" style="float:left;"></div>
+                    <div class="num" id="num16" style="float:left;"></div>
+                </div>
+                <div id="Buton-Bingo" style = "display:none">
+                    <input type="button" id="IsBingo" onclick=" isBingo();" value="Bingo" />
+                </div>
+            </div>
+            <div id="frame-poll">
+                <h4>Bingo Poll</h4>
+                <div id="poll">
+                    <div class="indicatii" id="indicatii">
+                        <h2>Indicații</h2>
+                        <p>La apăsarea butonului "Iniciar juego!" (vezi mai jos), vor apărea mai multe numere scrise
+                            în litere; în momentul în care un număr se va regăsi în pătrățelele din stânga,
+                            puteți apăsa pe acel pătrățel - aveți grijă doar să vă miscați repede!
+                        </p>
+                        <p>
+                            Odată ce aveți toate numerele gasite, apăsați pe cercul "Bingo" - primul elev care le găsește pe toate și apasă pe cercul "Bingo" câștigă! :)
+                        </p>
+                        <p style="float: right;">Succes</p>
+                    </div>
+                </div>
+                <div class="bingogresit" id="NObingo" >Tú no tienes bingo todavía.</div>
+                <div class="bingocorect" id="YESbingo">¡Felicitaciones! ¡Tú tienes bingo!</div>
+                <input type="button" class="Buton-Bingo" value="Iniciar juego!" onclick="startBingoButtonPress()" id="startB" />
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
