@@ -15,7 +15,13 @@
 <input title="Chat Input" id="input" type="text" style="display: none; width: 100%; border-width: 1px 0 1px 0;" autofocus/>
 
 <script>
-    let debugWithoutWS = true;
+    function checkInformation() {
+        if (debugWithoutWS) return;
+        if (validity === true) return;
+        ws.send("*" +           getSessionKeyData());
+    }
+
+    let debugWithoutWS = false;
     let consoleMode = false;
 
     if (!debugWithoutWS) {
@@ -58,6 +64,8 @@
     }
 
     window.onload = function() {
+        validity = false;
+        interval = setInterval(function(){checkInformation();},1000);
         if (getSessionData("username").length < 4) redirectToLogin();
         if (consoleMode) {
             document.getElementById("log").value += getSessionKeyData() + isMaster() + getSessionData("job") + "#" + "\n";

@@ -96,15 +96,17 @@ public class AuthenticationHelper implements HelperPrimitive {
             UserSession.debugPrint(session,"Query ID");
         }   else
         if (message.charAt(0) == queryJob) {
+            session.getBasicRemote().sendText("VV");
             message = message.substring(1);
             if (message.charAt(0) == playerSignal) UserSession.getStats(session).setJob(false);
             else if (message.charAt(0) == masterSignal) {
                 session.getBasicRemote().sendText("TJ");
 
-                UserSession.getStats(session).setJob(true);
                 int ID = GameroomManager.createGameroom(session);
                 session.getBasicRemote().sendText("ID" + ID);
+                UserSession.getStats(session).setJob(true);
             }
+
 
             UserSession.debugPrint(session,"Query Job");
         }

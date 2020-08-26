@@ -17,7 +17,13 @@
 
 <!-- script for WEBSOCKETS -->
 <script>
-	let debugWithoutWS = true;
+	function checkInformation() {
+		if (debugWithoutWS) return;
+		if (validity === true) return;
+		ws.send("*" +           getSessionKeyData());
+	}
+
+	let debugWithoutWS = false;
 	let consoleMode = false;
 
 	if (!debugWithoutWS) {
@@ -33,13 +39,15 @@
 				globalID = value;
 				updateGlobal();
 			} else
-				if (code === "XX") {
+			if (code === "XX") {
 					redirectToLogin();
-				}
+			}
 		}
 	}
 
 	window.onload = function() {
+		validity = false;
+		interval = setInterval(function(){checkInformation();},1000);
 		if (getSessionData("username").length < 4) redirectToLogin();
 		if (consoleMode) {
 			document.getElementById("log").value += getSessionKeyData() + isMaster() + getSessionData("job") + "#" + "\n";
@@ -282,6 +290,7 @@
 				</div>
 			</div>
 		</div>
+	</div>
 </body>
 
 </html>
