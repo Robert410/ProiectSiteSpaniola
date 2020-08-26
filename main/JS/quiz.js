@@ -51,7 +51,7 @@ start.addEventListener("click",startQuizButton);
 
 function startQuizButton() {
     if (debugWithoutWS) startQuiz();
-    else ws.send("QB");
+    else if (validity) ws.send("QB");
 }
 function restartQuizButton() {
     if (debugWithoutWS) restartQuiz();

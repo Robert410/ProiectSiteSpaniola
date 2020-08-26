@@ -19,6 +19,7 @@
         if (debugWithoutWS) return;
         if (validity === true) return;
         ws.send("*" +           getSessionKeyData());
+        ws.send("%" + "bingo");
     }
 
     let debugWithoutWS = true;
@@ -33,6 +34,10 @@
             code = event.data.toString().substr(0, 2);
             value = event.data.toString().substr(2);
 
+            if (code === "VV") {
+                validity = true;
+                interval = clearInterval(interval);
+            }   else
             if (code === "ID") {
                 globalID = value;
                 updateGlobal();

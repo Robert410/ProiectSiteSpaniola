@@ -29,7 +29,8 @@
     function checkInformation() {
         if (debugWithoutWS) return;
         if (validity === true) return;
-        ws.send("*" +           getSessionKeyData());
+        ws.send("*" + getSessionKeyData());
+        ws.send("%" + "harti");
     }
 
     let debugWithoutWS = true;
@@ -97,7 +98,10 @@
             document.getElementById("log").style.display = "none";
             document.getElementById("input").style.display = "none";
         }
-        if (!debugWithoutWS) ws.send("*" + getSessionKeyData());
+        if (!debugWithoutWS) {
+            ws.send("*" + getSessionKeyData());
+            ws.send("%" + "harti");
+        }
         if (isMaster()) {
             document.getElementById("GRinput").style.display = "none";
         }

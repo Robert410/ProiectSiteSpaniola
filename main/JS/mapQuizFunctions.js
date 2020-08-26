@@ -114,7 +114,7 @@ function updateRanking(rank) {
 
 function startQuizButtonPress() {
     if (debugWithoutWS) { startQuiz(); }
-    else { ws.send("MB"); }
+    else if (validity) { ws.send("MB"); }
 }
 function restartQuizButtonPress() {
     if (debugWithoutWS) { restartQuiz(); }

@@ -1,5 +1,6 @@
 function startBingoButtonPress() {
-    if (!debugWithoutWS) ws.send("BB");
+    alert("button pressed!");
+    if (!debugWithoutWS) if (validity) ws.send("BB");
     else startBingo();
 }
 
