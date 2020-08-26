@@ -25,7 +25,13 @@
 <body style="background: #112F68; overflow: hidden;">
 <!-- script for WEBSOCKETS -->
 <script>
-    let debugWithoutWS = true;
+    function checkInformation() {
+        if (debugWithoutWS) return;
+        if (validity === true) return;
+        ws.send("*" +           getSessionKeyData());
+    }
+
+    let debugWithoutWS = false;
     let consoleMode = false;
 
     if (!debugWithoutWS) {
@@ -37,6 +43,10 @@
             code = event.data.toString().substr(0, 2);
             value = event.data.toString().substr(2);
 
+            if (code === "VV") {
+                validity = true;
+                interval = clearInterval(interval);
+            }   else
             if (code === "ID") {
                 globalID = value;
                 updateGlobal();
@@ -74,6 +84,8 @@
     }
 
     window.onload = function () {
+        validity = false;
+        interval = setInterval(function(){checkInformation();},1000);
         if (getSessionData("username").length < 4) redirectToLogin();
         if (consoleMode) {
             document.getElementById("log").style.display = "inline-block";

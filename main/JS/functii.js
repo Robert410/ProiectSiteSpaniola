@@ -50,6 +50,7 @@ function redirectToLogin() {
 }
 
 
+let interval = setInterval(function(){},1000);
 function isMaster() {
     return getSessionData("job") === "master";
 }
@@ -72,6 +73,11 @@ function setPlayerName(name) {
 
 function getSessionKeyData() {
     return getSessionData("username") + "#" + getSessionData("job");
+}
+
+var validity = false;
+function isSessionInvalid() {
+    return validity;
 }
 
 //  functions replacing the cookie functions pre-update
