@@ -1,6 +1,7 @@
 function startBingoButtonPress() {
-    alert("button pressed!");
-    if (!debugWithoutWS) if (validity) ws.send("BB");
+    if (!debugWithoutWS) {
+        if (wsValidity) ws.send("BB");
+    }
     else startBingo();
 }
 
@@ -58,7 +59,7 @@ function startBingo()
     }
 
     cnt = 0;
-   if (!isMaster()) document.getElementById("Buton-Bingo").style.display = "block";
+    if (!isMaster()) document.getElementById("Buton-Bingo").style.display = "block";
     for (let i=1; i<=16; ++i)
         num[i].innerHTML = anum[i];
 

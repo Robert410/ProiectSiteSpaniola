@@ -18,9 +18,9 @@
 
 <!-- script for WEBSOCKETS -->
 <script>
-	function checkInformation() {
+	function retryWSInitialization() {
 		if (debugWithoutWS) return;
-		if (validity === true) return;
+		if (wsValidity === true) return;
 		ws.send("*" +           getSessionKeyData());
 	}
 
@@ -37,8 +37,8 @@
 			value = event.data.toString().substr(2);
 
 			if (code === "VV") {
-				validity = true;
-				interval = clearInterval(interval);
+				wsValidity = true;
+				wsInitializationInterval = clearInterval(wsInitializationInterval);
 			}   else
 			if (code === "ID") {
 				globalID = value;
@@ -51,24 +51,8 @@
 	}
 
 	window.onload = function() {
-		validity = false;
-		interval = setInterval(function(){checkInformation();},1000);
-		if (getSessionData("username").length < 4) {
-			redirectToLogin();
-		}
-		if (consoleMode) {
-			document.getElementById("log").value += getSessionKeyData() + isMaster() + getSessionData("job") + "#" + "\n";
-			document.getElementById("log").style.display = "inline-block";
-			document.getElementById("input").style.display = "inline-block";
-		}
-		else {
-			document.getElementById("log").style.display = "none";
-			document.getElementById("input").style.display = "none";
-		}
+		onloadGeneralTasks();
 		if (!debugWithoutWS) ws.send("*" + getSessionKeyData());
-		if (isMaster()) {
-			document.getElementById("GRinput").style.display = "none";
-		}
 	}
 
 </script>

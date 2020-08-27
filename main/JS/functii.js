@@ -1,6 +1,26 @@
 let globalID = "-";
 let gobacklink = 0;
 
+//  sometimes messages aren't probably sent through webscokets; this is a variable used as a last resort
+let wsInitializationInterval = setInterval(function(){},1000);
+function onloadGeneralTasks() {
+    wsValidity = false;
+    wsInitializationInterval = setInterval(function(){retryWSInitialization();},500);
+    if (getSessionData("username").length < 4) redirectToLogin();
+    if (consoleMode) {
+        document.getElementById("log").style.display = "inline-block";
+        document.getElementById("input").style.display = "inline-block";
+        document.getElementById("log").value += getSessionKeyData() + isMaster() + getSessionData("job") + "#" + "\n";
+    }
+    else {
+        document.getElementById("log").style.display = "none";
+        document.getElementById("input").style.display = "none";
+    }
+    if (isMaster()) {
+        document.getElementById("GRinput").style.display = "none";
+    }
+}
+
 function updateGlobal() {
     document.getElementById("gameroomIDUI").style.display = "block";
     document.getElementById("gameroomIDUI").innerHTML = globalID;
@@ -50,7 +70,6 @@ function redirectToLogin() {
 }
 
 
-let interval = setInterval(function(){},1000);
 function isMaster() {
     return getSessionData("job") === "master";
 }
@@ -75,9 +94,9 @@ function getSessionKeyData() {
     return getSessionData("username") + "#" + getSessionData("job");
 }
 
-var validity = false;
+var wsValidity = false;
 function isSessionInvalid() {
-    return validity;
+    return wsValidity;
 }
 
 //  functions replacing the cookie functions pre-update
