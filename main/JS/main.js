@@ -71,5 +71,27 @@ slider.addEventListener('transitionend', () => {
 	}
 })
 
+function changeviewtoMain(){
+	document.getElementById("main").style.opacity="1";
+	document.getElementById("contacte").style.opacity="0";
+	document.getElementById("detalii").style.opacity="0";
+}
+
+function changeviewtoDetalii(){
+	document.getElementById("main").style.opacity="0";
+	document.getElementById("contacte").style.opacity="0";
+	document.getElementById("detalii").style.opacity="1";
+}
+
+// contacte detalii main
+
+function changeviewtoContacte(){
+	document.getElementById("main").style.opacity="0";
+	document.getElementById("contacte").style.opacity="1";
+	document.getElementById("detalii").style.opacity="0";
+
+}
+
 btns.forEach(btn => btn.addEventListener('click', btnCheck));
 options.forEach(option => option.addEventListener('click', optionFunc));
+
