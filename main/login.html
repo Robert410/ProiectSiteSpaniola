@@ -53,7 +53,7 @@
     </script>
 
 </head>
-<body>
+<body class="noselect">
 <div id="warning-message">
     acest site este disponibil doar in modul peisaj
 </div>
@@ -62,11 +62,14 @@
         <div class="container">
              <div class="form">
                  <h2> Login </h2>
-
+                 <script type="text/javascript">
+                    window.addEventListener('keydown',function(e){if(e.keyIdentifier=='U+000A'||e.keyIdentifier=='Enter'||e.keyCode==13){if(e.target.nodeName=='INPUT'&&e.target.type=='text'){e.preventDefault();return false;}}},true);
+                    </script>
                  <form id="form">
                      <div class="inputbox">
                          <input type="text" name="" placeholder="Introdu un nume de utilizator..." id="userName">
-                         <span id="text"> </span>
+                         
+                     <span id="text"> </span>
                      </div>
                  </form>
 

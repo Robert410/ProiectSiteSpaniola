@@ -212,7 +212,7 @@ function setLeaderboardRawData(rawdata) {
     leaderboard.innerHTML = createLeaderboardData(leaderboardRawData);
 }
 function createLeaderboardData(rawdata) {
-    ans = "<p>Top Elevi</p>";
+    ans = "<p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p>";
     rawdata.toString().split("#").forEach(function (rawline) {
         ans += "<p>" + rawline + "</p>";
     }); return ans;

@@ -586,5 +586,32 @@ p{
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
 
+.mainbody{
+    position: fixed;
+    left: 88%;
+    top: 76%;
+    width: 9%;
+    height: 5%;
+}
+
+.detalii{
+    position: fixed;
+    left: 88%;
+    top: 83%;
+    width: 9%;
+    height: 5%;
+}
+
+.contacte{
+    position: fixed;
+    left: 88%;
+    top: 90%;
+    width: 9%;
+    height: 5%;
+}
+
+.transitionmain{
+    transition: opacity 1s;
 }

@@ -72,30 +72,62 @@
 	});
 </script>
 
-<body>
+<body class="noselect" style="overflow: hidden;">
 	<div id="warning-message">
 		acest site este disponibil doar in modul peisaj
   	</div>
 
 	<div id="wrapper">
-		<div class="containershow">
-			<div class="blank" id="main" style="background-color: #3B4542;">
-				<div class="animation-pane">
-					<ul class="box-anim">
-						<li></li>
-						<li></li>
-						<li></li>
-						<li></li>
-						<li></li>
-						<li></li>
-						<li></li>
-						<li></li>
-						<li></li>
-						<li></li>
-						<li></li>
-						<li></li>
-					</ul>
-				</div>
+		<div class="animation-pane">
+			<ul class="box-anim">
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+		</div>
+		<!-- navbar -->
+		<a style="top: 2vh; left: 0;" href="main.html" class="navbar">
+			<!-- <span class="slant1" style="color: white;">HOME</span> -->
+			<img src="imagini/imagini-butoane/main_umplut.png"
+				style=" width: 100%; height: 100%; height: 15vh; width: 10vw;">
+		</a>
+
+		<a style="top: 66vh; height: 16%;" href="inv.html" class="navbar">
+			<!-- <span style="font-size: 4vh;" class="slant">Learn</span> -->
+			<img src="imagini/imagini-butoane/learn_umplut.png"
+				style=" width: 100%; height: 100%; height: 15vh; width: 10vw;">
+		</a>
+		<div style="list-style-type: none;z-index: 999;">
+			<a href="harti.html" class="imgg" style="top: 18vh;">
+				<img src="imagini/imagini-butoane/spania_umplu.png"
+					style=" width: 100%; height: 100%; height: 15vh; width: 10vw;">
+			</a>
+			<a href="bingo.html" class="imgg" style="top: 34vh;">
+				<img src="imagini/imagini-butoane/bingo_umplut.png"
+					style=" width: 100%; height: 100%; height: 15vh; width: 10vw;">
+			</a>
+			<a href="principal_quiz.html" class="imgg" style=" top: 50vh;">
+				<img src="imagini/imagini-butoane/quiz_umplut.png"
+					style=" width: 100%; height: 100%; height: 15vh; width: 10vw;">
+			</a>
+			<div class="scrisvertical">HOME</div>
+			<div class="scrisvertical" style="top: 20vh;">HARTI</div>
+			<div class="scrisvertical" style="top: 36vh;">BINGO</div>
+			<div class="scrisvertical" style="top: 53vh;">QUIZ</div>
+			<div class="scrisvertical" style="top: 68vh;">LEARN</div>
+		</div>
+			<!-- SFARSIT NAVBAR  -->
+			<div class="blank transitionmain" id="main" style="background-color: #3B4542;">
+				
 				<h1 class="titlu">Bun venit în lumea noastră</h1>
 				<section>
 					<div class="cube">
@@ -106,51 +138,7 @@
 						</div>
 					</div>
 				</section>
-				<!-- navbar -->
-				<a style="top: 2vh; left: 0;" href="main.html" class="navbar">
-					<!-- <span class="slant1" style="color: white;">HOME</span> -->
-					<img src="imagini/imagini-butoane/main_umplut.png"
-						style=" width: 100%; height: 100%; height: 15vh; width: 10vw;">
-				</a>
-
-				<a style="top: 66vh; height: 16%;" href="inv.html" class="navbar">
-					<!-- <span style="font-size: 4vh;" class="slant">Learn</span> -->
-					<img src="imagini/imagini-butoane/learn_umplut.png"
-						style=" width: 100%; height: 100%; height: 15vh; width: 10vw;">
-				</a>
-				<div style="list-style-type: none;z-index: 999;">
-					<a href="harti.html" class="imgg" style="top: 18vh;">
-						<img src="imagini/imagini-butoane/spania_umplu.png"
-							style=" width: 100%; height: 100%; height: 15vh; width: 10vw;">
-					</a>
-					<a href="bingo.html" class="imgg" style="top: 34vh;">
-						<img src="imagini/imagini-butoane/bingo_umplut.png"
-							style=" width: 100%; height: 100%; height: 15vh; width: 10vw;">
-					</a>
-					<a href="principal_quiz.html" class="imgg" style=" top: 50vh;">
-						<img src="imagini/imagini-butoane/quiz_umplut.png"
-							style=" width: 100%; height: 100%; height: 15vh; width: 10vw;">
-					</a>
-
-					<!-- <button type="button" class="buton" onclick="openForm()" id="removee">GR</button> -->
-					<!-- <img class="buton" onclick="openForm()" id="removee" src="imagini/imagini-butoane/room_umplut.png"
-    style=" height: 16vh; width: 10vw;"></img>
-    <div style="display: none;z-index: 999;"id="myForm">
-        <li class="GR">
-        <div class="middle1"; id="gameroomIDUI"><input class="inputu"; id="GRinput"></div>
-        </li>
-        <button class="close" onclick="closeForm()">Enter</button>
-    </div>
-</div> -->
-					<div class="scrisvertical">HOME</div>
-					<div class="scrisvertical" style="top: 20vh;">HARTI</div>
-					<div class="scrisvertical" style="top: 36vh;">BINGO</div>
-					<div class="scrisvertical" style="top: 53vh;">QUIZ</div>
-					<div class="scrisvertical" style="top: 68vh;">LEARN</div>
-					<!-- SFARSIT NAVBAR  -->
-					<!-- <a href="#detalii" class="minunat">detalii</a> -->
-					<!-- <a href="#contacte" class="minunat1">contacte</a> -->
-					<a href="#contacte" class="contactebuton">
+					<!-- <a href="#contacte" class="contactebuton">
 						<span></span>
 						<span></span>
 						<span></span>
@@ -163,10 +151,10 @@
 						<span></span>
 						<span></span>
 						detalii
-					</a>
-
+					</a> -->
 				</div>
-				<div id="detalii" style="background-color: #3B4542;" class="blank">
+			
+			<div id="detalii" style="background-color: #3B4542; opacity: 0;" class="blank transitionmain">
 					<div class="animation-pane">
 						<ul class="box-anim">
 							<li></li>
@@ -202,11 +190,8 @@
 							</div>
 						</div>
 					</div>
-
-					<a href="#main" class="aranjs">
-						<img src="imagini/imagini-butoane/sageata.png" class="dimensiune" type="button"></a>
 				</div>
-				<div id="contacte" style="background-color: green;" class="blank">
+				<div id="contacte" style="background-color: green; opacity: 0;" class="blank transitionmain">
 					<div class="animation-pane">
 						<ul class="box-anim">
 							<li></li>
@@ -275,13 +260,12 @@
 							<p style="font-size: 2.7vh;"><i>daniel16todasca@gmail.com</i></p>
 						</div>
 					</div>
-					<a href="#main" class="aranjs">
-						<img src="imagini/imagini-butoane/sageata.png" class="dimensiune" type="button">
-					</a>
-				</div>
-			</div>
+				</div>	
+			<button class="mainbody" onclick="changeviewtoMain()">Main</button>
+			<button class="detalii"  onclick="changeviewtoDetalii()">Detalii</button>
+			<button class="contacte" onclick="changeviewtoContacte()">Contacte</button>
+			
 		</div>
-	</div>
 </body>
 
 </html>
