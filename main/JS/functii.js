@@ -1,6 +1,10 @@
 let globalID = "-";
 let gobacklink = 0;
 
+let LONG_MESSAGE_LENGTH = 50;
+
+let wsString = "ws://localhost:8080/proiect_site_spaniola_war_exploded/ws";
+
 //  sometimes messages aren't probably sent through webscokets; this is a variable used as a last resort
 let wsInitializationInterval = setInterval(function(){},1000);
 function onloadGeneralTasks() {
@@ -37,7 +41,9 @@ function hideComentariu(message) {
 function showInformation(message) {
     clearInterval(printInterval);
     showComentariu(message);
-    printInterval = setInterval(function() { hideComentariu(); clearInterval(printInterval);}, 4000);
+    var timeout = 4000;
+    if (message.toString().length >= LONG_MESSAGE_LENGTH) timeout *= 2;
+    printInterval = setInterval(function() { hideComentariu(); clearInterval(printInterval);}, timeout);
 }
 
 function openForm() {

@@ -27,7 +27,7 @@
     let consoleMode = false;
 
     if (!debugWithoutWS) {
-        var ws = new WebSocket("ws://localhost:8080/proiect_site_spaniola_war_exploded/ws");
+        var ws = new WebSocket(wsString);
 
         ws.onmessage = function (event) {
             console.log(event.data);
@@ -71,6 +71,12 @@
 
     window.onload = function() {
         onloadGeneralTasks();
+        if (isMaster()) {
+            showInformation("Pentru a juca acest joc, aveti nevoie sa aduceti elevi in gameroom-ul pe care il detineti - apasati pe patratetul din stanga jos, spuneti ID-ul elevilor si lasati-i sa se conecteze.");
+        }
+        else {
+            showInformation("Daca dorestei sa te conectezi cu ID-ul unui profesor, introdu acel numar dupa ce apesi patratetul din stanga jos.");
+        }
         if (!debugWithoutWS) {
             ws.send("*" + getSessionKeyData());
             ws.send("%" + "bingo");

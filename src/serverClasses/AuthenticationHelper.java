@@ -65,6 +65,7 @@ public class AuthenticationHelper implements HelperPrimitive {
                         session.getBasicRemote().sendText("PPNu poți să te muți din gameroom până nu îți termini jocul!");
                     }
                     else {
+                        GameroomManager.onRemovalTasks(session);
                         GameroomManager.remove(session);
 
                         try {
@@ -84,6 +85,7 @@ public class AuthenticationHelper implements HelperPrimitive {
                             if (GameroomManager.add(session, ID)) {
                                 session.getBasicRemote().sendText("TA");
                                 session.getBasicRemote().sendText("PPAi intrat în gameroom!");
+                                GameroomManager.sendExclusiveMessage(ID, UserSession.getStats(session),"PP" + UserSession.getStats(session).getName() + " a intrat în gameroom!");
                                 session.getBasicRemote().sendText(GameroomManager.joinMessage(session));
                             } else  session.getBasicRemote().sendText(badIDAnswer);
                         } catch (RuntimeException e) {

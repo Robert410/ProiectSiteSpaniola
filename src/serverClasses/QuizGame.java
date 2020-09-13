@@ -24,11 +24,12 @@ class QuizUtilities {
         }   return rawdata;
     }
     public static String createRankingMessage(UserStats stats) {
-        if (QuizGame.isInvalid(stats) || !QuizGame.getGamedataOf(stats).isFinished()) return "";
-        double timeSum = QuizGame.getGamedataOf(stats).timesList.stream().mapToDouble(a->a).sum();
+        if (QuizGame.isInvalid(stats)) return "";
+        QuizGamedata gamedata = QuizGame.getGamedataOf(stats);
+        double timeSum = gamedata.timesList.stream().mapToDouble(a->a).sum();
         int temp = (int)(timeSum * 1000.0);
         timeSum = ((double)temp)/1000.0;
-        return stats.getName() + ": " + QuizGame.getGamedataOf(stats).getScore() + " points, " + timeSum +"s#";
+        return stats.getName() + ": " + QuizGame.getGamedataOf(stats).getScore() + " points, " + gamedata.questionsAnswered + "/" + gamedata.maxQuestions + ", " + timeSum +"s#";
     }
 }
 
@@ -82,7 +83,7 @@ public class QuizGame implements HelperPrimitive {
             if (time_x.equals(time_y)) {
                 return 0;
             }   else
-            if (time_x < time_y) return 1;
+            if (time_x > time_y) return 1;
             return -1;
         }   else
         if (score_x < score_y) return 1;
@@ -167,7 +168,10 @@ public class QuizGame implements HelperPrimitive {
             peer.sendMessageToSessions(printAnswer + leaderboardData);
         }
 
-        if (bAbort) abortGame(ID, exception);
+        if (bAbort) {
+            GameroomManager.sendExclusiveMessage(ID, exception, "PPJocul s-a terminat!");
+            abortGame(ID, exception);
+        }
     }
 
     public boolean isCalled(String str) { return str.charAt(0) == signal; }
@@ -261,6 +265,8 @@ public class QuizGame implements HelperPrimitive {
 
             if (data.isFinished()) {
                 UserSession.getStats(session).toggleGameState();
+                if (ID != 0)
+                    session.getBasicRemote().sendText("PPAi terminat jocul! Acum așteaptă și pe ceilalți colegi ai tăi să termine.");
                 session.getBasicRemote().sendText(selfFinishAnswer + data.answerString());
                 GameroomManager.sendExclusiveMessage(ID, stats,finishAnswer + data.finishString());
             }

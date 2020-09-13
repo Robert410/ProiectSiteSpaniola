@@ -40,7 +40,8 @@ public class UserSession {
 
     //  private data
     private static String statsMapString = "S";
-    private void closePlayerSession(Session session) {
+    private void closePlayerSession(Session session) throws IOException {
+        GameroomManager.onRemovalTasks(session);
         GameroomManager.removeWithoutMessage(session);
     }
     private void closeMasterSession(Session session) {

@@ -120,6 +120,14 @@ public class GameroomManager {
         }
     }
 
+    public static void onRemovalTasks(Session session) throws IOException {
+        int prevID = UserSession.getStats(session).getID();
+        if (prevID != 0) {
+            String removalMessage = "PP" + UserSession.getStats(session).getName() + " a ieșit din gameroom!";
+            sendExclusiveMessage(prevID, UserSession.getStats(session), removalMessage);
+        }
+    }
+
     public static boolean checkExistence(Integer ID) {
         return gameroomMap.containsKey(ID);
     }
