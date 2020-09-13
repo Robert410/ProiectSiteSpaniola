@@ -19,13 +19,28 @@ function getTime() {
 var lastTime = getTime();
 
 let questions = [
-    {   question:"template",
-        choiceA:"al norte con el Mar Cantábrico, al sur con el el Océano Atlántico , al este   con Portugal, al oeste Asturias y Castilla-León",
-        choiceB:"al norte con el Océano Atlántico, al sur con Portugal, al este con Asturias y Castilla-León, al oeste con el Mar Cantábricos",
-        choiceC:"al norte con el Mar Cantábrico, al sur con Portugal, al oeste con el Océano Atlántico , al este con Asturias y Castilla-León",
-        choiceD:"template",
+    {   question:"template1",
+        choiceA:"A1",
+        choiceB:"B1",
+        choiceC:"C1",
+        choiceD:"D1",
         corect:"A"
-    }
+    },
+    {   
+        question:"template2",
+        choiceA:"A2",
+        choiceB:"B2",
+        choiceC:"C2",
+        choiceD:"D2",
+        corect:"D"
+    },
+    {   question:"template3",
+        choiceA:"A3",
+        choiceB:"B3",
+        choiceC:"C3",
+        choiceD:"D3",
+        corect:"C"
+    }   
 ];
 
 let isAlone = true;
@@ -81,6 +96,16 @@ function showQuestion()
     else {
         choiceD.style.display = "flex";
     }
+    question.classList.remove('questioon');
+    choiceA.classList.remove('answer');
+    choiceB.classList.remove('answer');
+    choiceC.classList.remove('answer');
+    choiceD.classList.remove('answer');
+    void question.offsetWidth;
+    void choiceA.offsetWidth;
+    void choiceB.offsetWidth;
+    void choiceC.offsetWidth;
+    void choiceD.offsetWidth;
 }
 function startQuiz()
 {
@@ -109,12 +134,21 @@ function startQuiz()
     final.style.display="none";
     curentQuestion = 0;
     score = 0;
-
     restart.style.display="none";
     start.style.display="none";
     scoreHtml.style.display="none";
     showQuestion();
     quiz.style.display="block";
+    question.classList.add('questioon');
+    choiceA.classList.add('answer');
+    choiceB.classList.add('answer');
+    choiceC.classList.add('answer');
+    choiceD.classList.add('answer');
+    void question.offsetWidth;
+    void choiceA.offsetWidth;
+    void choiceB.offsetWidth;
+    void choiceC.offsetWidth;
+    void choiceD.offsetWidth;
     if(restartDone==0)
     {
         showProgress();
@@ -139,12 +173,11 @@ function checkAnswer(answer)
     }
     else
         wrongAnswer();
-
+    
     //  to update the server data
     var timeValue = getTime();
     if (!debugWithoutWS) ws.send("QU" + score + "#" + curentQuestion + "#" +  (timeValue - lastTime)*0.001);
     lastTime = timeValue;
-
     if(curentQuestion<totalQuestions)
     {
         curentQuestion++;
@@ -152,6 +185,16 @@ function checkAnswer(answer)
     }
     else
         showScore();
+    question.classList.add('questioon');
+    choiceA.classList.add('answer');
+    choiceB.classList.add('answer');
+    choiceC.classList.add('answer');
+    choiceD.classList.add('answer');
+    void question.offsetWidth;
+    void choiceA.offsetWidth;
+    void choiceB.offsetWidth;
+    void choiceC.offsetWidth;
+    void choiceD.offsetWidth;
 }
 
 function corectAnswer()
@@ -165,7 +208,6 @@ function wrongAnswer()
 function showScore()
 {
     start.style.display="none";
-
     quiz.style.display="none";
     scoreHtml.style.display="block";
     updateQuiz();
