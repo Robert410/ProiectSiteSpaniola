@@ -175,8 +175,9 @@ function restartQuiz() {
 
 function pressOn(option) {
     if (q_isMaster()) return;
-    if(option === locatii[curentQuestion]) 
+    if(option === locatii[curentQuestion]) {
         corectAnswer();
+    }
     else wrongAnswer();
 
     //  to update the server data
@@ -250,4 +251,19 @@ function insulehover(){
 function insulehoverback(){
     document.getElementById('insulahover').style.display="none";
     
+}
+
+var buttonplayers = 0;
+
+function showplayers(){
+    if(buttonplayers % 2 == 0){
+    document.getElementById('players').style.opacity = "1";
+    document.getElementById('players').style.marginLeft = "0";
+    buttonplayers++;
+    }
+    else{
+    document.getElementById('players').styleopacity = "0";
+    document.getElementById('players').style.marginLeft = "150vh";
+    buttonplayers++;
+    }
 }

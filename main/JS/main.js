@@ -83,8 +83,6 @@ function changeviewtoDetalii(){
 	document.getElementById("detalii").style.opacity="1";
 }
 
-// contacte detalii main
-
 function changeviewtoContacte(){
 	document.getElementById("main").style.opacity="0";
 	document.getElementById("contacte").style.opacity="1";
@@ -95,3 +93,6 @@ function changeviewtoContacte(){
 btns.forEach(btn => btn.addEventListener('click', btnCheck));
 options.forEach(option => option.addEventListener('click', optionFunc));
 
+function showquestion(){
+    document.getElementById("question").style.opacity="1";
+}

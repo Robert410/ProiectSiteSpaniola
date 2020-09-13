@@ -4,7 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
+
     <title>Quiz</title>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="imagini/tab/">
+    <link rel="icon" type="image/png" sizes="32x32" href="imagini/tab//favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="imagini/tab//favicon-16x16.png">
+    <link rel="manifest" href="imagini/tab//site.webmanifest">
+    <link rel="mask-icon" href="imagini/tab//safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+
     <link rel="stylesheet" href="CSS/style_quiz.css">
     <link rel="stylesheet" href="CSS/style.css">
     <link
@@ -13,8 +23,10 @@
             integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
             crossorigin="anonymous"
     />
+
     <script type="text/javascript" src="JS/main.js"></script>
     <script src="JS/functii.js"></script>
+
 </head>
 
 <textarea title="Chat Log" id="log" readonly
@@ -98,7 +110,7 @@
 </script> 
 
 
-<body style="background-color: #947BD3;" class="noselect">
+<body style="background-color: #947BD3;" class="noselect transitionpage" id="ShowPage">
     <div id="warning-message">
         acest site este disponibil doar in modul peisaj
   	</div>
@@ -151,10 +163,9 @@
 <div id="container">
     <div id="start">Începe quizul!
     </div>
-    <div id="quiz" style="display: none">
-        <div id="question"></div>
+    <div id="quiz" style="display: none; transition: opacity 1s;">
+        <div id="question" class="questioon"></div>
         <div id="choices">
-            <!-- id="A" onclick="checkAnswer('A')" -->
             <div class="answer" id="A" onclick="checkAnswer('A')" style="margin-top:5vh;">
                 <div class="boxanswer">
                   <div class="contentasnwer">

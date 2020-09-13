@@ -5,10 +5,21 @@
 
 <link rel="stylesheet" type="text/css" href="CSS/bingo.css" />
 <link rel="stylesheet" href="CSS/style.css" />
+
 <title>Bingo</title>
+
+<link rel="apple-touch-icon" sizes="180x180" href="imagini/tab/">
+<link rel="icon" type="image/png" sizes="32x32" href="imagini/tab//favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="imagini/tab//favicon-16x16.png">
+<link rel="manifest" href="imagini/tab//site.webmanifest">
+<link rel="mask-icon" href="imagini/tab//safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+
 <script type="text/javascript" src="JS/bingo.js"></script>
 <script type="text/javascript" src="JS/main.js"></script>
 <script type="text/javascript" src="JS/functii.js"></script>
+
 </head>
 
 <textarea title="Chat Log" id="log" readonly
@@ -80,7 +91,7 @@
 </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
-<body style="overflow: hidden;" class="noselect">
+<body style="overflow: hidden;" class="noselect transitionpage" id="ShowPage">
     <div id="warning-message">
         acest site este disponibil doar in modul portret
     </div>
@@ -130,32 +141,40 @@
         <div class="scrisvertical" style="top: 85vh;">ROOM</div>
         <div class="scrisvertical" style="top: 82vh; left: 5vw; writing-mode: horizontal-tb">GAME</div>
         <!-- SFARSIT NAVBAR  -->
-        <div id="frame">
+        <div id="frame" style="width: 80%;">
             <div id="card">
                 <h2 class="titlu-Bingo">Bingo</h2>
-                <div id="tabel-Bingo">
-                    <div class="num" id="num1" style="float:left;"></div>
-                    <div class="num" id="num2" style="float:left;"></div>
-                    <div class="num" id="num3" style="float:left;"></div>
-                    <div class="num" id="num4" style="float:left;"></div>
-                    <div class="num" id="num5" style="float:left;"></div>
-                    <div class="num" id="num6" style="float:left;"></div>
-                    <div class="num" id="num7" style="float:left;"></div>
-                    <div class="num" id="num8" style="float:left;"></div>
-                    <div class="num" id="num9" style="float:left;"></div>
-                    <div class="num" id="num10" style="float:left;"></div>
-                    <div class="num" id="num11" style="float:left;"></div>
-                    <div class="num" id="num12" style="float:left;"></div>
-                    <div class="num" id="num13" style="float:left;"></div>
-                    <div class="num" id="num14" style="float:left;"></div>
-                    <div class="num" id="num15" style="float:left;"></div>
-                    <div class="num" id="num16" style="float:left;"></div>
+                <div id="tabel-Bingo" style="width: 17vw; position: relative;">
+                <div class="careu4x4">
+                    <div class="num" id="num1"></div>
+                    <div class="num" id="num2"></div>
+                    <div class="num" id="num3"></div>
+                    <div class="num" id="num4"></div>
+                </div>
+                <div class="careu4x4">
+                    <div class="num" id="num5"></div>
+                    <div class="num" id="num6"></div>
+                    <div class="num" id="num7"></div>
+                    <div class="num" id="num8"></div>
+                </div>
+                <div class="careu4x4">
+                    <div class="num" id="num9"></div>
+                    <div class="num" id="num10"></div>
+                    <div class="num" id="num11"></div>
+                    <div class="num" id="num12"></div>
+                </div>
+                <div class="careu4x4">
+                    <div class="num" id="num13"></div>
+                    <div class="num" id="num14"></div>
+                    <div class="num" id="num15"></div>
+                    <div class="num" id="num16"></div>
+                </div>
                 </div>
                 <div id="Buton-Bingo" style = "display:none">
                     <input type="button" id="IsBingo" onclick=" isBingo();" value="Bingo" />
                 </div>
             </div>
-            <div id="frame-poll">
+            <div id="frame-poll" style="margin-left: 10%;">
                 <h4>Bingo Poll</h4>
                 <div id="poll">
                     <div class="indicatii" id="indicatii">
@@ -164,10 +183,10 @@
                             în litere; în momentul în care un număr se va regăsi în pătrățelele din stânga,
                             puteți apăsa pe acel pătrățel - aveți grijă doar să vă miscați repede!
                         </p>
-                        <p>
+                        <p style="margin-top: 20vh;">
                             Odată ce aveți toate numerele gasite, apăsați pe cercul "Bingo" - primul elev care le găsește pe toate și apasă pe cercul "Bingo" câștigă! :)
                         </p>
-                        <p style="float: right;">Succes</p>
+                        <p style="float: right; margin-top: 15vh;">Succes</p>
                     </div>
                 </div>
                 <div class="bingogresit" id="NObingo" >Tú no tienes bingo todavía.</div>

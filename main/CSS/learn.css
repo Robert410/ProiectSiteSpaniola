@@ -308,3 +308,52 @@ section{
               user-select: none; 
         
     }
+
+    .transitionpage{
+        opacity: 0;
+        transition: opacity 1s;
+        transition-delay: 0.1s;
+    }
+    
+    #ShowPage {
+        -moz-animation: cssAnimation1 0.6s ease-in 0.1s forwards;
+        /* Firefox */
+        -webkit-animation: cssAnimation1 0.6s ease-in 0.1s forwards;
+        /* Safari and Chrome */
+        -o-animation: cssAnimation1 0.6s ease-in 0.1s forwards;
+        /* Opera */
+        animation: cssAnimation1 0.6s ease-in 0.1s forwards;
+        -webkit-animation-fill-mode: forwards;
+        animation-fill-mode: forwards;
+      }
+    
+      @keyframes cssAnimation1 {
+        from{opacity: 0;}
+        to {
+          opacity: 1;}
+      }
+      @-webkit-keyframes cssAnimation1 {
+        from{opacity: 0;}
+        to {
+          opacity: 1;}
+      }
+
+      .noselect {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+    
+    p{
+    
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+    

@@ -17,8 +17,8 @@ body{
     border-radius: 3%;
     border: 0.2vh solid black;
     padding: 1vh;
-    margin-left: 25vw;
-    margin-top: 7vh;
+    margin-left: 17vw;
+    margin-top: 5vh;
 }
 
 
@@ -145,18 +145,7 @@ body{
      padding-bottom:1vw;
      margin-left: 0.5vw;
 }
-.num
-{
-    background:#ece4e6;
-    width:5vh;
-    height:5vh;
-    margin-left: 1vh;
-    margin-top: 1vh;
-    font-weight:bold;
-    padding: 2vh;
-    border: 0.2vh solid black;
-    font-size: 2vh;
-}
+
 .num-style
 {
     width: 8vw;
@@ -220,23 +209,27 @@ h4{
     width: 10vw;
     height: 6vh;
     font-size: 2.5vh;
+    margin-top: 3vh;
 }
 
 .indicatii{
-  font-size: 3vh;
+  font-size: 2.5vh;
   position: absolute;
   padding: 4vh;
   display: block;
   width: 45vw;
+  height: 90%;
 }
 
 .indicatii h2{
   margin-left: 15vw;
+  height: 5%;
 }
 
 .indicatii p{
   text-indent: 4vh;
-  margin-top: 5vh;
+  margin-top: 4vh;
+  height: 5%;
 }
 
 .bingogresit{
@@ -257,4 +250,21 @@ h4{
   bottom: 18vh;
   color: green;
   display: none;
+}
+
+.careu4x4{
+    display: flex;
+    position: relative;
+}
+.num
+{
+    background:#ece4e6;
+    width:  6vh;
+    height: 6vh;
+    margin-left: 1vh;
+    margin-top: 1vh;
+    font-weight:bold;
+    padding: 2vh;
+    border: 0.2vh solid black;
+    font-size: 2vh;
 }

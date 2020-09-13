@@ -132,8 +132,7 @@ body{
 
 }
 
-#question{
-
+.questioon{
     width: 40vw;
     height: 8vh;
     position: absolute;
@@ -142,6 +141,7 @@ body{
     margin : 0;
     padding : 2vh;
     font-size: 3vh;
+    animation: changeopacity1 2s ease forwards;
 }
 
 #choices{
@@ -279,7 +279,7 @@ body{
     position: relative;
     font-size: 2.2vh;
   }
-
+  
   .answer{
     position: relative;
     height: 7vh;
@@ -289,6 +289,7 @@ body{
     justify-content: center;
     align-items: center;
   }
+
 
   .answer:before{
     content: '';
@@ -300,6 +301,7 @@ body{
     background: white;
     transform: skew(2deg,2deg);
     z-index: -1;
+    animation: changeopacity1 2s ease forwards;
   }
 
   .answer:after{
@@ -320,6 +322,7 @@ body{
     background: linear-gradient(315deg, green, yellow);
   }
 
+
   .contentasnwer{
     position: relative;
     padding: 2vh;
@@ -334,3 +337,22 @@ body{
     font-size: 2.5vh;
   }
 
+  .changeopacityto1{  
+    position: relative;
+    height: 7vh;
+    width: 40vw;
+    background-color: #947BD3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: changeopacity1 2s ease forwards;
+  }
+  
+  @keyframes changeopacity1{
+    0%{
+      opacity: 0;
+    }
+    99%{
+      opacity: 1;
+    }
+  }
