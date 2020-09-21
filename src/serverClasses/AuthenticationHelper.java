@@ -85,7 +85,9 @@ public class AuthenticationHelper implements HelperPrimitive {
                             if (GameroomManager.add(session, ID)) {
                                 session.getBasicRemote().sendText("TA");
                                 session.getBasicRemote().sendText("PPAi intrat în gameroom!");
+                                session.getBasicRemote().sendText("GS" + GameroomManager.getNamesRawString(ID));
                                 GameroomManager.sendExclusiveMessage(ID, UserSession.getStats(session),"PP" + UserSession.getStats(session).getName() + " a intrat în gameroom!");
+                                GameroomManager.sendExclusiveMessage(ID, UserSession.getStats(session),"GD" + UserSession.getStats(session).getName());
                                 session.getBasicRemote().sendText(GameroomManager.joinMessage(session));
                             } else  session.getBasicRemote().sendText(badIDAnswer);
                         } catch (RuntimeException e) {

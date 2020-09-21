@@ -50,6 +50,22 @@
                 wsValidity = true;
                 wsInitializationInterval = clearInterval(wsInitializationInterval);
             }   else
+            if (code === "GS") {
+                initializeSet(value);
+                updateGameroomList();
+            }   else
+            if (code === "GD") {
+                addGRName(value);
+                updateGameroomList();
+            }   else
+            if (code === "GM") {
+                resetGRSet();
+                updateGameroomList();
+            }   else
+            if (code === "GX") {
+                removeGRName(value);
+                updateGameroomList();
+            }   else
             if (code === "ID") {
                 globalID = value;
                 updateGlobal();
@@ -83,10 +99,12 @@
     window.onload = function() {
         onloadGeneralTasks();
         if (isMaster()) {
-            showInformation("Pentru a juca acest joc, aveti nevoie sa aduceti elevi in gameroom-ul pe care il detineti - apasati pe patratetul din stanga jos, spuneti ID-ul elevilor si lasati-i sa se conecteze.");
+            showInformation("Pentru a juca acest joc, aveți nevoie să aduceți elevi în gameroom-ul pe care îl dețineți - apăsați pe pătrățetul din stânga jos, spuneți ID-ul elevilor și lăsați-i să se conecteze.");
+            setCustomInfoClean();
         }
         else {
-            showInformation("Daca dorestei sa te conectezi cu ID-ul unui profesor, introdu acel numar dupa ce apesi patratetul din stanga jos.");
+            showInformation("Dacă dorești să te conectezi cu ID-ul unui profesor, introdu acel număr după ce apeși pătrățetul din stângă jos.");
+            setCustomInfoClean();
         }
         if (!debugWithoutWS) {
             ws.send("*" + getSessionKeyData());
@@ -98,6 +116,14 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
 <body style="overflow: hidden;" class="noselect transitionpage" id="ShowPage">
+<div class="gameroomON">
+    <div class="players" id="players">
+
+    </div>
+    <div class="arrow">
+        <img src="imagini/imagini-butoane/grunge-arrow-2-3.png" alt="GameRoom" class="imgaranj" onclick="showplayers()">
+    </div>
+</div>
     <div id="warning-message">
         acest site este disponibil doar in modul portret
     </div>

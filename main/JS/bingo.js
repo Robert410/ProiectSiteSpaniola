@@ -50,6 +50,9 @@ function isBingo()
 }
 function startBingo()
 {
+    hideComentariu();
+    intvPersistance = false; clearInterval(printInterval);
+
     document.getElementById('NObingo').style.display="none";
     document.getElementById('YESbingo').style.display="none";
     document.getElementById('poll').innerHTML = "";

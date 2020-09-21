@@ -2,6 +2,44 @@ let globalID = "-";
 let gobacklink = 0;
 
 let LONG_MESSAGE_LENGTH = 50;
+let intvPersistance = false;
+
+let gameroomNameSet = new Set();
+function addGRName(string) {
+    gameroomNameSet.add(string);
+}
+function removeGRName(string) {
+    gameroomNameSet.delete(string);
+}
+function resetGRSet(string) {
+    gameroomNameSet.clear();
+    addGRName(getSessionData("username"));
+}
+function initializeSet(rawstring) {
+    gameroomNameSet.clear();
+    rawstring.toString().split("#").forEach(function (name) {
+        if (name.length > 4)
+            gameroomNameSet.add(name);
+    });
+}
+function getGameroomNameList() {
+    if (gameroomNameSet.size === 1) return "Se pare ca esti pe cont propriu!";
+
+    let ans = "Lista de oameni din gameroom: (" + gameroomNameSet.size + ")\n";
+
+    let idx = 1;
+    for (let name of gameroomNameSet.values())  {
+        ans += idx + ". " + name;
+        if (name === getSessionData("username")) ans += " (asta esti tu!)";
+        ans += '\n';
+        idx ++;
+    }
+    return ans;
+}
+function updateGameroomList() {
+    addGRName(getSessionData("username"));
+    document.getElementById('players').innerText = getGameroomNameList();
+}
 
 let wsString = "ws://localhost:8080/proiect_site_spaniola_war_exploded/ws";
 
@@ -38,12 +76,18 @@ function showComentariu(message) {
 function hideComentariu(message) {
     document.getElementById("comentarii").style.display = "none";
 }
-function showInformation(message) {
+
+function showInformation(message, persistance = false) {
+    if (intvPersistance) return;
+    intvPersistance = persistance;
     clearInterval(printInterval);
     showComentariu(message);
     var timeout = 4000;
     if (message.toString().length >= LONG_MESSAGE_LENGTH) timeout *= 2;
-    printInterval = setInterval(function() { hideComentariu(); clearInterval(printInterval);}, timeout);
+    printInterval = setInterval(function() { hideComentariu(); intvPersistance = false; clearInterval(printInterval);}, timeout);
+}
+function setCustomInfoClean() {
+    clearInterval(printInterval);
 }
 
 function openForm() {
@@ -89,10 +133,12 @@ function setPlayer() {
 }
 function setMasterName(name) {
     if (!debugWithoutWS) ws.send("AN" + name);
+    addGRName(name);
     setSessionData("username", name)
 }
 function setPlayerName(name) {
     if (!debugWithoutWS) ws.send("AN" + name);
+    addGRName(name);
     setSessionData("username", name);
 }
 
@@ -125,4 +171,21 @@ function nolink(){
 
 function goback(){
     window.history.go(-gobacklink-1);
+}
+
+
+
+var buttonplayersState = false;
+function showplayers(){
+    if(buttonplayersState === false){
+        document.getElementById('players').style.opacity = "1";
+        document.getElementById('players').style.marginLeft = "0";
+        updateGameroomList();
+        buttonplayersState = true;
+    }
+    else{
+        document.getElementById('players').styleopacity = "0";
+        document.getElementById('players').style.marginLeft = "150vh";
+        buttonplayersState = false;
+    }
 }

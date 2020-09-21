@@ -44,6 +44,15 @@ let translated = {
 };
 
 
+let timelimitInterval = setInterval(function() {}, 30000);
+function timeAbort() {
+    for (let i=curentQuestion; i<=totalQuestions; ++i)
+        nextQuestion();
+    showScore();
+    showInformation("Au trecut 3 minute - quiz-ul s-a oprit automat.", true)
+    clearInterval(timelimitInterval);
+}
+
 function getTime() {
     var clock = new Date();
     return clock.getTime();
@@ -124,6 +133,11 @@ function restartQuizButtonPress() {
 
 
 function nextQuestion() {
+    //  to update the server data
+    var timeValue = getTime();
+    if (!debugWithoutWS) ws.send("QU" + score + "#" + curentQuestion + "#" +  (timeValue - lastTime)*0.001);
+    lastTime = timeValue;
+
     ++ curentQuestion;
     if (curentQuestion === totalQuestions) {
         document.getElementById("mapGuessGameQuestionHeader").innerText = "";
@@ -145,6 +159,10 @@ function wrongAnswer() {
 }
 
 function startQuiz() {
+    if (!q_isMaster())
+        timelimitInterval = setInterval(timeAbort, 1000*60*3);
+    hideComentariu();
+    intvPersistance = false; clearInterval(printInterval);
     leaderboardRawData = "";
     if (q_isMaster()) {
         restartDone = true;
@@ -179,14 +197,10 @@ function pressOn(option) {
         corectAnswer();
     }
     else wrongAnswer();
-
-    //  to update the server data
-    var timeValue = getTime();
-    if (!debugWithoutWS) ws.send("QU" + score + "#" + curentQuestion + "#" +  (timeValue - lastTime)*0.001);
-    lastTime = timeValue;
 }
 function showScore() {
     if (restartDone == false) return;
+    clearInterval(timelimitInterval);
     document.getElementById("mapGuessGameQuestionHeader").innerText = "";
     updateRanking("");
     ascundeHarta();
@@ -213,7 +227,7 @@ function setLeaderboardRawData(rawdata) {
     leaderboard.innerHTML = createLeaderboardData(leaderboardRawData);
 }
 function createLeaderboardData(rawdata) {
-    ans = "<p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p><p>Top Elevi</p>";
+    ans = "<p>Top Elevi</p>";
     rawdata.toString().split("#").forEach(function (rawline) {
         ans += "<p>" + rawline + "</p>";
     }); return ans;
@@ -251,19 +265,4 @@ function insulehover(){
 function insulehoverback(){
     document.getElementById('insulahover').style.display="none";
     
-}
-
-var buttonplayers = 0;
-
-function showplayers(){
-    if(buttonplayers % 2 == 0){
-    document.getElementById('players').style.opacity = "1";
-    document.getElementById('players').style.marginLeft = "0";
-    buttonplayers++;
-    }
-    else{
-    document.getElementById('players').styleopacity = "0";
-    document.getElementById('players').style.marginLeft = "150vh";
-    buttonplayers++;
-    }
 }

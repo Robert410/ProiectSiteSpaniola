@@ -59,7 +59,23 @@
             if (code === "ID") {
                 globalID = value;
                 updateGlobal();
-            }
+            }   else
+            if (code === "GS") {
+                initializeSet(value);
+                updateGameroomList();
+            }   else
+            if (code === "GD") {
+                addGRName(value);
+                updateGameroomList();
+            }   else
+            if (code === "GM") {
+                resetGRSet();
+                updateGameroomList();
+            }   else
+            if (code === "GX") {
+                removeGRName(value);
+                updateGameroomList();
+            }   else
             if (code === "QB") {
                 if (consoleMode) document.getElementById("log").value += "the quiz should start" + "\n";
                 if (consoleMode) document.getElementById("log").value += event.data.toString().substr(2) + "\n";
@@ -96,9 +112,11 @@
         onloadGeneralTasks();
         if (isMaster()) {
             showInformation("Pentru a juca acest joc, aveti nevoie sa aduceti elevi in gameroom-ul pe care il detineti - apasati pe patratetul din stanga jos, spuneti ID-ul elevilor si lasati-i sa se conecteze.");
+            setCustomInfoClean();
         }
         else {
-            showInformation("Daca dorestei sa te conectezi cu ID-ul unui profesor, introdu acel numar dupa ce apesi patratetul din stanga jos.");
+            showInformation("Daca doresti sa te conectezi cu ID-ul unui profesor, introdu acel numar dupa ce apesi patratetul din stanga jos.");
+            setCustomInfoClean();
         }
         if (!debugWithoutWS) {
             ws.send("*" + getSessionKeyData());
@@ -252,15 +270,15 @@
         </div>
         </a>
     </div>
+    <h1 class="gaseste" ; id="mapGuessGameQuestionHeader">Începem?</h1>
     <div class="gameroomON">
         <div class="players" id="players">
-            
+
         </div>
         <div class="arrow">
-        <img src="imagini/imagini-butoane/grunge-arrow-2-3.png" alt="GameRoom" class="imgaranj" onclick="showplayers()">
+            <img src="imagini/imagini-butoane/grunge-arrow-2-3.png" alt="GameRoom" class="imgaranj" onclick="showplayers()">
         </div>
     </div>
-    <h1 class="gaseste" ; id="mapGuessGameQuestionHeader">Începem?</h1>
 </div>
 
 </body>

@@ -59,6 +59,7 @@ public class UserSession {
     public void close(Session session) throws IOException, EncodeException {
         if (getStats(session).isMaster() && GameroomManager.checkMasterGameroom(getStats(session))) {
             GameroomManager.sendMessage(getStats(session).getID(), "PPProfesorul a ieșit! Gameroom-ul nu mai este valabil, dar dacă te jucai, vei putea continua în modul single-player.");
+            GameroomManager.sendMessage(getStats(session).getID(), "GM");
         }
         closeHelpers(session);
         GameroomManager.sendExclusiveMessage(getStats(session).getID(), getStats(session),"close task 1 done");

@@ -12,6 +12,15 @@ const final      = document.getElementById("showLeaderboard");
 const mesajFinal = document.getElementById("finish");
 const rankingUI  = document.getElementById("rankingUIText");
 
+let timelimitInterval = setInterval(function() {}, 30000);
+function timeAbort() {
+    for (let i=curentQuestion; i<=totalQuestions; ++i)
+        checkAnswer("Z");
+    showScore();
+    showInformation("Au trecut 3 minute - quiz-ul s-a oprit automat.", true)
+    clearInterval(timelimitInterval);
+}
+
 function getTime() {
     var clock = new Date();
     return clock.getTime();
@@ -109,6 +118,11 @@ function showQuestion()
 }
 function startQuiz()
 {
+    if (!q_isMaster())
+        timelimitInterval = setInterval(timeAbort, 1000*60*3);
+
+    hideComentariu();
+    intvPersistance = false; clearInterval(printInterval);
     lastTime = getTime();
 
     leaderboardRawData = "";
@@ -207,6 +221,7 @@ function wrongAnswer()
 }
 function showScore()
 {
+    clearInterval(timelimitInterval);
     start.style.display="none";
     quiz.style.display="none";
     scoreHtml.style.display="block";

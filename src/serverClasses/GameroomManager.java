@@ -125,7 +125,15 @@ public class GameroomManager {
         if (prevID != 0) {
             String removalMessage = "PP" + UserSession.getStats(session).getName() + " a ieșit din gameroom!";
             sendExclusiveMessage(prevID, UserSession.getStats(session), removalMessage);
+            sendExclusiveMessage(prevID, UserSession.getStats(session), "GX" + UserSession.getStats(session).getName());
         }
+    }
+
+    public static String getNamesRawString(Integer ID) {
+        String ans = "";
+        for (UserStats peer : gameroomMap.get(ID)) {
+            ans += peer.getName() + "#";
+        }   return ans;
     }
 
     public static boolean checkExistence(Integer ID) {

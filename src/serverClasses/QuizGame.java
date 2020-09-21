@@ -169,7 +169,6 @@ public class QuizGame implements HelperPrimitive {
         }
 
         if (bAbort) {
-            GameroomManager.sendExclusiveMessage(ID, exception, "PPJocul s-a terminat!");
             abortGame(ID, exception);
         }
     }
