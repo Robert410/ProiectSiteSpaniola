@@ -182,12 +182,14 @@ function showplayers(){
     if(buttonplayersState === false){
         document.getElementById('players').style.opacity = "1";
         document.getElementById('players').style.marginLeft = "0";
+        document.getElementById('gameroomON').style.zIndex = "4";
         updateGameroomList();
         buttonplayersState = true;
     }
     else{
         document.getElementById('players').styleopacity = "0";
         document.getElementById('players').style.marginLeft = "150vh";
+        document.getElementById('gameroomON').style.zIndex = "-1";
         buttonplayersState = false;
     }
 }
