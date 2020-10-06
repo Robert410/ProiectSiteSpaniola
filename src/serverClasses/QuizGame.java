@@ -16,9 +16,9 @@ class QuizUtilities {
         return entries;
     };
 
-    public static String createRankingMessage(Integer ID) {
+    public static String createRankingMessage(Integer ID, UserStats exception) {
         String rawdata = "";
-        for (UserStats peer : QuizGame.sortGameroomUsers(ID)) {
+        for (UserStats peer : QuizGame.sortGameroomUsers(ID, exception)) {
             if (peer.isMaster()) continue;
             rawdata += createRankingMessage(peer);
         }   return rawdata;
@@ -90,10 +90,10 @@ public class QuizGame implements HelperPrimitive {
         return -1;
     }
 
-    public static List <UserStats> sortGameroomUsers(Integer ID) {
+    public static List <UserStats> sortGameroomUsers(Integer ID, UserStats exception) {
         List <UserStats> gameroomUsers = new ArrayList<>();
         for (UserStats peer : GameroomManager.getGameroomFriends(ID)) {
-            if (peer.isPlayer()) gameroomUsers.add(peer);
+            if (peer.isPlayer() && peer != exception) gameroomUsers.add(peer);
         }
         gameroomUsers.sort(QuizGame::userCompare);
         return gameroomUsers;
@@ -131,7 +131,7 @@ public class QuizGame implements HelperPrimitive {
 
     protected void abortGame(Integer ID, UserStats exception) throws IOException {
         GameroomManager.sendExclusiveMessage(ID, exception,"TQ");
-        GameroomManager.sendExclusiveMessage(ID, exception,printAnswer + QuizUtilities.createRankingMessage(ID));
+        GameroomManager.sendExclusiveMessage(ID, exception,printAnswer + QuizUtilities.createRankingMessage(ID, exception));
         GameroomManager.sendMessageToMaster (ID, abortAnswer);
         for (UserStats stats : GameroomManager.getGameroomFriends(ID)) gamedataMap.remove(stats);
     }
@@ -154,7 +154,7 @@ public class QuizGame implements HelperPrimitive {
                 bAbort = false;
         }
 
-        List <UserStats> arr = sortGameroomUsers(ID);
+        List <UserStats> arr = sortGameroomUsers(ID, exception);
         for (int i=0; i<arr.size(); ++i) {
             UserStats stats = arr.get(i);
             if (stats != exception) stats.sendMessageToSessions(rankingAnswer + "#" + (i+1) + "/" + arr.size());
@@ -162,7 +162,7 @@ public class QuizGame implements HelperPrimitive {
 
         GameroomManager.sendExclusiveMessage(ID, exception, "" + bAbort);
 
-        String leaderboardData = QuizUtilities.createRankingMessage(ID);
+        String leaderboardData = QuizUtilities.createRankingMessage(ID, exception);
         for (UserStats peer : GameroomManager.getGameroomFriends(ID)) {
             if (peer == exception) continue;
             peer.sendMessageToSessions(printAnswer + leaderboardData);

@@ -76,7 +76,6 @@ public class GameroomManager {
         UserStats stats = UserSession.getStats(session);
         if (stats.getID() != 0) {
             gameroomMap.get(stats.getID()).remove(stats);
-            stats.setID(0); //  !!! new line, untested; might bring problems
         }
     }
     //      deletes a room with given ID, if it has ever existed

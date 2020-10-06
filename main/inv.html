@@ -21,6 +21,56 @@
 
 </head>
 
+<script>
+  function retryWSInitialization() {
+    if (debugWithoutWS) return;
+    if (wsValidity === true) return;
+    ws.send("*" +  getSessionKeyData());
+  }
+
+  let debugWithoutWS = true;
+  let consoleMode = false;
+
+  if (!debugWithoutWS) {
+    var ws = new WebSocket(wsString);
+
+    ws.onmessage = function (event) {
+      console.log(event.data);
+      if (consoleMode) document.getElementById("log").value += event.data + "\n";
+      code = event.data.toString().substr(0, 2);
+      value = event.data.toString().substr(2);
+
+      if (code === "VV") {
+        wsValidity = true;
+        wsInitializationInterval = clearInterval(wsInitializationInterval);
+      }   else
+      if (code === "XX") {
+        redirectToLogin();
+      }
+    }
+  }
+
+  window.onload = function() {
+    onloadGeneralTasks();
+  }
+</script>
+
+<!-- DEBUG CONSOLE: html for debug purposes only -->
+<textarea title="Chat Log" id="log" readonly
+          style="display: none; width: 100%; height: 100px; resize: none; margin: 0; padding: 0; border: 0;"> </textarea>
+<input title="Chat Input" id="input" type="text" style="display: none; width: 100%; border-width: 1px 0 1px 0;"
+       autofocus />
+
+<!-- script for the DEBUG CONSOLE -->
+<script>
+  document.getElementById("input").addEventListener("keyup", function (event) {
+    if (event.keyCode === 13) {
+      ws.send(event.target.value);
+      event.target.value = "";
+    }
+  });
+</script>
+
 <body class="noselect transitionpage" id="ShowPage">
   <div id="warning-message">
     this website is only viewable in landscape mode

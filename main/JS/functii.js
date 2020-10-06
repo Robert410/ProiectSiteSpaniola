@@ -44,11 +44,13 @@ function updateGameroomList() {
 let wsString = "ws://localhost:8080/proiect_site_spaniola_war_exploded/ws";
 
 //  sometimes messages aren't probably sent through webscokets; this is a variable used as a last resort
-let wsInitializationInterval = setInterval(function(){},1000);
+let wsInitializationInterval = setInterval(function(){},100000);
 function onloadGeneralTasks() {
     wsValidity = false;
-    wsInitializationInterval = setInterval(function(){retryWSInitialization();},500);
-    if (getSessionData("username").length < 4) redirectToLogin();
+    wsInitializationInterval = setInterval(function(){retryWSInitialization();},5000);
+    if (getSessionData("username").length < 4) {
+        redirectToLogin();
+    }
     if (consoleMode) {
         document.getElementById("log").style.display = "inline-block";
         document.getElementById("input").style.display = "inline-block";

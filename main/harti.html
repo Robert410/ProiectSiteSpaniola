@@ -40,7 +40,7 @@
         ws.send("%" + "harti");
     }
 
-    let debugWithoutWS = false;
+    let debugWithoutWS = true;
     let consoleMode = false;
 
     if (!debugWithoutWS) {
@@ -119,8 +119,6 @@
             setCustomInfoClean();
         }
         if (!debugWithoutWS) {
-            ws.send("*" + getSessionKeyData());
-            ws.send("%" + "harti");
         }
     }
 </script>

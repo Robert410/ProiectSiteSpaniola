@@ -21,7 +21,7 @@
 
     <!-- script for WEBSOCKETS -->
     <script>
-        let debugWithoutWS = false;
+        let debugWithoutWS = true;
         let consoleMode = true;
 
         if (!debugWithoutWS) {
@@ -154,7 +154,6 @@
         if(isNameValid) {
             setPlayerName(document.getElementById("userName").value.toString().trim());
             setPlayer();
-            setSessionData("username", document.getElementById("userName").value.toString().trim());
             window.location = "main.html";
         }
     }

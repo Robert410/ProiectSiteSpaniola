@@ -8,25 +8,17 @@
   <component name="ChangeListManager">
     <list default="true" id="0458b861-f998-4428-b203-9723252b2e4c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/CSS/harti.css" beforeDir="false" afterPath="$PROJECT_DIR$/main/CSS/harti.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/CSS/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/main/CSS/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/JS/bingo.js" beforeDir="false" afterPath="$PROJECT_DIR$/main/JS/bingo.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/JS/functii.js" beforeDir="false" afterPath="$PROJECT_DIR$/main/JS/functii.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/JS/mapQuizFunctions.js" beforeDir="false" afterPath="$PROJECT_DIR$/main/JS/mapQuizFunctions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/JS/quiz.js" beforeDir="false" afterPath="$PROJECT_DIR$/main/JS/quiz.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/bingo.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/bingo.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/harti.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/harti.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/inv.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/inv.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/login.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/main.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/main.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/principal_quiz.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/principal_quiz.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/proiect_site_spaniola_war_exploded/WEB-INF/classes/serverClasses/AuthenticationHelper.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/proiect_site_spaniola_war_exploded/WEB-INF/classes/serverClasses/AuthenticationHelper.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/proiect_site_spaniola_war_exploded/WEB-INF/classes/serverClasses/GameroomManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/proiect_site_spaniola_war_exploded/WEB-INF/classes/serverClasses/GameroomManager.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/proiect_site_spaniola_war_exploded/WEB-INF/classes/serverClasses/QuizGame.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/proiect_site_spaniola_war_exploded/WEB-INF/classes/serverClasses/QuizGame.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/proiect_site_spaniola_war_exploded/WEB-INF/classes/serverClasses/UserSession.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/proiect_site_spaniola_war_exploded/WEB-INF/classes/serverClasses/UserSession.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/proiect_site_spaniola/serverClasses/AuthenticationHelper.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/proiect_site_spaniola/serverClasses/AuthenticationHelper.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/proiect_site_spaniola/serverClasses/GameroomManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/proiect_site_spaniola/serverClasses/GameroomManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/proiect_site_spaniola_war_exploded/WEB-INF/classes/serverClasses/QuizUtilities.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/proiect_site_spaniola_war_exploded/WEB-INF/classes/serverClasses/QuizUtilities.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/proiect_site_spaniola/serverClasses/QuizGame.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/proiect_site_spaniola/serverClasses/QuizGame.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/proiect_site_spaniola/serverClasses/UserSession.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/proiect_site_spaniola/serverClasses/UserSession.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/serverClasses/AuthenticationHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/serverClasses/AuthenticationHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/proiect_site_spaniola/serverClasses/QuizUtilities.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/proiect_site_spaniola/serverClasses/QuizUtilities.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/serverClasses/GameroomManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/serverClasses/GameroomManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/serverClasses/QuizGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/serverClasses/QuizGame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/serverClasses/UserSession.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/serverClasses/UserSession.java" afterDir="false" />
@@ -110,17 +102,6 @@
     <property name="settings.editor.selected.configurable" value="vcs.Git" />
   </component>
   <component name="RunManager">
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="GlassFish 4.1.2" type="GlassfishConfiguration" factoryName="Local" APPLICATION_SERVER_NAME="GlassFish 4.1.2" ALTERNATIVE_JRE_ENABLED="false">
       <option name="OPEN_IN_BROWSER_URL" value="http://localhost:8080/proiect_site_spaniola_war_exploded" />
       <deployment>
@@ -239,7 +220,13 @@
       <workItem from="1600681968536" duration="1229000" />
       <workItem from="1600683216280" duration="932000" />
       <workItem from="1600684433868" duration="1803000" />
-      <workItem from="1600686251828" duration="1382000" />
+      <workItem from="1600686251828" duration="1796000" />
+      <workItem from="1600688070610" duration="368000" />
+      <workItem from="1601293559378" duration="717000" />
+      <workItem from="1601383501343" duration="29000" />
+      <workItem from="1601498625271" duration="3412000" />
+      <workItem from="1601547201388" duration="2644000" />
+      <workItem from="1601634096112" duration="3216000" />
     </task>
     <task id="LOCAL-00001" summary="BACKEND FIXES:&#10;- missing profesor ID&#10;&#10;&#10;DANIEL">
       <created>1598436963347</created>
@@ -290,7 +277,14 @@
       <option name="project" value="LOCAL" />
       <updated>1600017652542</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="final(?) features that had to be implemented through the backend">
+      <created>1600687762079</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1600687762079</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -302,7 +296,8 @@
     <MESSAGE value="BACKEND FIXES&#10;- not properly registering the page of a gameroom&#10;&#10;DANIEL" />
     <MESSAGE value="BACKEND FIXES&#10;- bingo was fucked up after the last commit, now works &#10;- cleaner code &#10;&#10;DANIEL" />
     <MESSAGE value="unimportant backend settings" />
-    <option name="LAST_COMMIT_MESSAGE" value="unimportant backend settings" />
+    <MESSAGE value="final(?) features that had to be implemented through the backend" />
+    <option name="LAST_COMMIT_MESSAGE" value="final(?) features that had to be implemented through the backend" />
   </component>
   <component name="WindowStateProjectService">
     <state x="552" y="178" key="#Project_Structure" timestamp="1596726555329">
@@ -313,10 +308,14 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1598358686161" />
-    <state x="520" y="88" key="CommitChangelistDialog2" timestamp="1600017651572">
+    <state x="520" y="88" key="CommitChangelistDialog2" timestamp="1600687761167">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="520" y="88" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1600017651572" />
+    <state x="520" y="88" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1600687761167" />
+    <state x="184" y="86" key="DiffContextDialog" timestamp="1600687997293">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="184" y="86" key="DiffContextDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1600687997293" />
     <state x="725" y="387" key="Github.CreatePullRequestDialog" timestamp="1598437007105">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -325,58 +324,58 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="824" y="380" key="Github.Dialog.Accounts.Choose/0.0.1920.1040@0.0.1920.1040" timestamp="1598436989609" />
-    <state width="636" height="282" key="GridCell.Tab.0.bottom" timestamp="1600687611508">
+    <state width="636" height="189" key="GridCell.Tab.0.bottom" timestamp="1601637316849">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="636" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1600687611508" />
-    <state width="636" height="282" key="GridCell.Tab.0.center" timestamp="1600687611508">
+    <state width="636" height="189" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1601637316849" />
+    <state width="636" height="189" key="GridCell.Tab.0.center" timestamp="1601637316849">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="636" height="282" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1600687611508" />
-    <state width="636" height="282" key="GridCell.Tab.0.left" timestamp="1600687611508">
+    <state width="636" height="189" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1601637316849" />
+    <state width="636" height="189" key="GridCell.Tab.0.left" timestamp="1601637316849">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="636" height="282" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1600687611508" />
-    <state width="636" height="282" key="GridCell.Tab.0.right" timestamp="1600687611508">
+    <state width="636" height="189" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1601637316849" />
+    <state width="636" height="189" key="GridCell.Tab.0.right" timestamp="1601637316849">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="636" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1600687611508" />
-    <state width="636" height="282" key="GridCell.Tab.1.bottom" timestamp="1600687611509">
+    <state width="636" height="189" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1601637316849" />
+    <state width="636" height="189" key="GridCell.Tab.1.bottom" timestamp="1601637316850">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="636" height="282" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1600687611509" />
-    <state width="636" height="282" key="GridCell.Tab.1.center" timestamp="1600687611508">
+    <state width="636" height="189" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1601637316850" />
+    <state width="636" height="189" key="GridCell.Tab.1.center" timestamp="1601637316849">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="636" height="282" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1600687611508" />
-    <state width="636" height="282" key="GridCell.Tab.1.left" timestamp="1600687611508">
+    <state width="636" height="189" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1601637316849" />
+    <state width="636" height="189" key="GridCell.Tab.1.left" timestamp="1601637316849">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="636" height="282" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1600687611508" />
-    <state width="636" height="282" key="GridCell.Tab.1.right" timestamp="1600687611509">
+    <state width="636" height="189" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1601637316849" />
+    <state width="636" height="189" key="GridCell.Tab.1.right" timestamp="1601637316849">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="636" height="282" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1600687611509" />
-    <state width="636" height="282" key="GridCell.Tab.2.bottom" timestamp="1598358718331">
+    <state width="636" height="189" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1601637316849" />
+    <state width="636" height="282" key="GridCell.Tab.2.bottom" timestamp="1600688258315">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="636" height="282" key="GridCell.Tab.2.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1598358718331" />
-    <state width="636" height="282" key="GridCell.Tab.2.center" timestamp="1598358718331">
+    <state width="636" height="282" key="GridCell.Tab.2.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1600688258315" />
+    <state width="636" height="282" key="GridCell.Tab.2.center" timestamp="1600688258315">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="636" height="282" key="GridCell.Tab.2.center/0.0.1920.1040@0.0.1920.1040" timestamp="1598358718331" />
-    <state width="636" height="282" key="GridCell.Tab.2.left" timestamp="1598358718330">
+    <state width="636" height="282" key="GridCell.Tab.2.center/0.0.1920.1040@0.0.1920.1040" timestamp="1600688258315" />
+    <state width="636" height="282" key="GridCell.Tab.2.left" timestamp="1600688258314">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="636" height="282" key="GridCell.Tab.2.left/0.0.1920.1040@0.0.1920.1040" timestamp="1598358718330" />
-    <state width="636" height="282" key="GridCell.Tab.2.right" timestamp="1598358718331">
+    <state width="636" height="282" key="GridCell.Tab.2.left/0.0.1920.1040@0.0.1920.1040" timestamp="1600688258314" />
+    <state width="636" height="282" key="GridCell.Tab.2.right" timestamp="1600688258315">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="636" height="282" key="GridCell.Tab.2.right/0.0.1920.1040@0.0.1920.1040" timestamp="1598358718331" />
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1598533714087">
+    <state width="636" height="282" key="GridCell.Tab.2.right/0.0.1920.1040@0.0.1920.1040" timestamp="1600688258315" />
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1600688208882">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1598533714087" />
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1600688208882" />
     <state x="578" y="251" key="com.intellij.dvcs.ui.CompareBranchesDialog" timestamp="1598437002820">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -385,14 +384,18 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="655" y="344" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1596726144241" />
-    <state x="462" y="0" width="1199" height="717" key="dock-window-1" timestamp="1599903792038">
+    <state x="0" y="0" width="1489" height="810" key="dock-window-1" timestamp="1601499582878">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="462" y="0" width="1199" height="717" key="dock-window-1/0.0.1920.1040@0.0.1920.1040" timestamp="1599903792038" />
-    <state x="1074" y="323" width="736" height="708" key="find.popup" timestamp="1599903818255">
+    <state x="0" y="0" width="1489" height="810" key="dock-window-1/0.0.1920.1040@0.0.1920.1040" timestamp="1601499582878" />
+    <state x="0" y="0" width="1489" height="810" key="dock-window-2" timestamp="1601499582878">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="1074" y="323" width="736" height="708" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1599903818255" />
+    <state x="0" y="0" width="1489" height="810" key="dock-window-2/0.0.1920.1040@0.0.1920.1040" timestamp="1601499582878" />
+    <state x="1074" y="323" width="736" height="708" key="find.popup" timestamp="1601636265369">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="1074" y="323" width="736" height="708" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1601636265369" />
     <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1598530143467">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

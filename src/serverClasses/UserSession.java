@@ -41,8 +41,11 @@ public class UserSession {
     //  private data
     private static String statsMapString = "S";
     private void closePlayerSession(Session session) throws IOException {
+        if (debugMode) GameroomManager.sendExclusiveMessage(getStats(session).getID(), getStats(session),"hey1");
         GameroomManager.onRemovalTasks(session);
+        if (debugMode) GameroomManager.sendExclusiveMessage(getStats(session).getID(), getStats(session),"hey2");
         GameroomManager.removeWithoutMessage(session);
+        if (debugMode) GameroomManager.sendExclusiveMessage(getStats(session).getID(), getStats(session),"hey3");
     }
     private void closeMasterSession(Session session) {
         GameroomManager.deleteRoom(getStats(session).getID());
@@ -62,15 +65,15 @@ public class UserSession {
             GameroomManager.sendMessage(getStats(session).getID(), "GM");
         }
         closeHelpers(session);
-        GameroomManager.sendExclusiveMessage(getStats(session).getID(), getStats(session),"close task 1 done");
-        GameroomManager.sendExclusiveMessage(getStats(session).getID(), getStats(session),getStats(session).getName() + " has left.");
+        if (debugMode) GameroomManager.sendExclusiveMessage(getStats(session).getID(), getStats(session),"close task 1 done");
+        if (debugMode) GameroomManager.sendExclusiveMessage(getStats(session).getID(), getStats(session),getStats(session).getName() + " has left.");
         if (getStats(session).isMaster()) closeMasterSession(session);
         else                              closePlayerSession(session);
-        GameroomManager.sendExclusiveMessage(getStats(session).getID(), getStats(session),"close task 2 done");
+        if (debugMode) GameroomManager.sendExclusiveMessage(getStats(session).getID(), getStats(session),"close task 2 done");
         getStats(session).remove(session);
-        GameroomManager.sendExclusiveMessage(getStats(session).getID(), getStats(session),"close task 3 done");
-        session.getUserProperties().clear();
-        GameroomManager.sendExclusiveMessage(getStats(session).getID(), getStats(session),"close task 4 done");
+        if (debugMode) GameroomManager.sendExclusiveMessage(getStats(session).getID(), getStats(session),"close task 3 done");
+        if (session.getUserProperties() != null) session.getUserProperties().clear();
+        if (debugMode) GameroomManager.sendExclusiveMessage(getStats(session).getID(), getStats(session),"close task 4 done");
     }
 
     @OnMessage

@@ -34,7 +34,7 @@
         ws.send("%" + "bingo");
     }
 
-    let debugWithoutWS = false;
+    let debugWithoutWS = true;
     let consoleMode = false;
 
     if (!debugWithoutWS) {
@@ -105,10 +105,6 @@
         else {
             showInformation("Dacă dorești să te conectezi cu ID-ul unui profesor, introdu acel număr după ce apeși pătrățetul din stângă jos.");
             setCustomInfoClean();
-        }
-        if (!debugWithoutWS) {
-            ws.send("*" + getSessionKeyData());
-            ws.send("%" + "bingo");
         }
     }
 

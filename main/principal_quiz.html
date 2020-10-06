@@ -41,8 +41,8 @@
         ws.send("%" + "quiz");
     }
 
-    let debugWithoutWS = false;
-    let consoleMode = false;
+    let debugWithoutWS = true;
+    let consoleMode = true;
 
     if (!debugWithoutWS) {
         var ws = new WebSocket(wsString);
@@ -124,10 +124,6 @@
         else {
             showInformation("Daca dorestei sa te conectezi cu ID-ul unui profesor, introdu acel numar dupa ce apesi patratetul din stanga jos.");
             setCustomInfoClean();
-        }
-        if (!debugWithoutWS) {
-            ws.send("*" + getSessionKeyData());
-            ws.send("%" + "quiz");
         }
     }
 

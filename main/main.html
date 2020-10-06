@@ -42,7 +42,7 @@
 		ws.send("*" +           getSessionKeyData());
 	}
 
-	let debugWithoutWS = false;
+	let debugWithoutWS = true;
 	let consoleMode = false;
 
 	if (!debugWithoutWS) {
@@ -70,7 +70,6 @@
 
 	window.onload = function() {
 		onloadGeneralTasks();
-		if (!debugWithoutWS) ws.send("*" + getSessionKeyData());
 	}
 
 </script>
