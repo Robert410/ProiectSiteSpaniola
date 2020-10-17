@@ -32,7 +32,6 @@
 <body style="background: #112F68; overflow: hidden;" class="noselect transitionpage" id="ShowPage">
 <!-- script for WEBSOCKETS -->
 <script>
-    // small change
     function retryWSInitialization() {
         if (debugWithoutWS) return;
         if (wsValidity === true) return;
@@ -59,13 +58,14 @@
             if (code === "ID") {
                 globalID = value;
                 updateGlobal();
-            }   else
+            }
             if (code === "GS") {
                 initializeSet(value);
                 updateGameroomList();
             }   else
             if (code === "GD") {
                 addGRName(value);
+                showInformation(value + " a intrat în gameroom!");
                 updateGameroomList();
             }   else
             if (code === "GM") {
@@ -74,6 +74,7 @@
             }   else
             if (code === "GX") {
                 removeGRName(value);
+                showInformation(value + " a ieșit din gameroom!");
                 updateGameroomList();
             }   else
             if (code === "QB") {
@@ -103,7 +104,7 @@
                 redirectToLogin();
             } else
             if (code === "PP") {
-                showInformation(value);
+                showInformation(ppArr[parseInt(value)-1]);
             }
         }
     }

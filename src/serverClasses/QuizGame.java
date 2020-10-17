@@ -2,7 +2,6 @@ package serverClasses;
 
 import javax.websocket.*;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -10,19 +9,32 @@ import java.util.HashMap;
 import java.util.Collections;
 
 class QuizUtilities {
-    public static List <String> generateEntries() {
-        List <String> entries = new ArrayList<>(QuizGame.rawQuestions);
+    /*  class only containing public static methods
+        role of the class:
+            quiz data computation
+            remove a large clutter of functions from QuizGamedata for easier human understanding/debugging
+    */
+
+    public static List <String> generateEntries(int max) {
+        List <String> entries = new ArrayList<>();
+        for (int i=0; i<max; ++i) {
+            if (i < 10)
+                entries.add("0" + i);
+            else
+                entries.add("" + i);
+        }
         Collections.shuffle(entries);
         return entries;
     };
 
     public static String createRankingMessage(Integer ID, UserStats exception) {
         String rawdata = "";
-        for (UserStats peer : QuizGame.sortGameroomUsers(ID, exception)) {
+        for (UserStats peer : sortGameroomUsers(ID, exception)) {
             if (peer.isMaster()) continue;
             rawdata += createRankingMessage(peer);
         }   return rawdata;
     }
+
     public static String createRankingMessage(UserStats stats) {
         if (QuizGame.isInvalid(stats)) return "";
         QuizGamedata gamedata = QuizGame.getGamedataOf(stats);
@@ -31,50 +43,10 @@ class QuizUtilities {
         timeSum = ((double)temp)/1000.0;
         return stats.getName() + ": " + QuizGame.getGamedataOf(stats).getScore() + " points, " + gamedata.questionsAnswered + "/" + gamedata.maxQuestions + ", " + timeSum +"s#";
     }
-}
-
-class QuizGamedata {
-    public QuizGamedata() { }
-    public QuizGamedata(UserStats user, int maxQuestions, char signal) { this.user = user; this.maxQuestions = maxQuestions; this.signal = signal; score = 0; questionsAnswered = 0; }
-
-    public void increment(int question, Double time, int score) {
-        questionsAnswered = question+1;
-        timesList.add(time);
-        this.score = score;
-    }
-    public String answerString() {
-        String answer = user.getName() + " has answered question number " + questionsAnswered + "! Total score: " + score + ".";
-        return answer;
-    }
-    public String finishString() {
-        String answer = user.getName() + " has finished! Total score: " + score + ".";
-        return answer;
-    }
-
-    public boolean isFinished() { return questionsAnswered >= maxQuestions; }
-
-    public int getScore() { return score; }
-
-    protected UserStats user;
-    protected int score = 0;
-    public int questionsAnswered  = 0;
-    protected List <Double> timesList = new ArrayList<>();
-    protected int maxQuestions;
-
-    public char signal;
-}
-
-public class QuizGame implements HelperPrimitive {
-    QuizGame() { initialized = false; }
-
-    public static QuizGamedata getGamedataOf(UserStats stats) {
-        if (!gamedataMap.containsKey(stats)) return null;
-        return gamedataMap.get(stats);
-    }
 
     public static int userCompare(UserStats x, UserStats y) {
-        QuizGamedata gamedata_x = getGamedataOf(x);
-        QuizGamedata gamedata_y = getGamedataOf(y);
+        QuizGamedata gamedata_x = QuizGame.getGamedataOf(x);
+        QuizGamedata gamedata_y = QuizGame.getGamedataOf(y);
         Double time_x = gamedata_x.timesList.stream().mapToDouble(a->a).sum();
         Double time_y = gamedata_y.timesList.stream().mapToDouble(a->a).sum();
         int score_x = gamedata_x.score;
@@ -95,41 +67,88 @@ public class QuizGame implements HelperPrimitive {
         for (UserStats peer : GameroomManager.getGameroomFriends(ID)) {
             if (peer.isPlayer() && peer != exception) gameroomUsers.add(peer);
         }
-        gameroomUsers.sort(QuizGame::userCompare);
+        gameroomUsers.sort(QuizUtilities::userCompare);
         return gameroomUsers;
     }
+}
 
-    public int maxQuestions = 10;
-    protected static Map <UserStats, QuizGamedata> gamedataMap = new HashMap<>();
-    public static List <String> rawQuestions = new ArrayList<>();
+class QuizGamedata {
+    /*  class storing game data about a single player
+     */
 
-    protected String readPath = "questions.txt";
+    public QuizGamedata(UserStats user, int maxQuestions, char signal) {
+        this.user = user;
+        this.maxQuestions = maxQuestions;
+        this.signal = signal;
+        score = 0;
+        questionsAnswered = 0;
+    }
 
-    protected AsyncParser parser = null;
+    public int questionsAnswered;
+    public char signal;
+
+    public void increment(int question, Double time, int score) {
+        questionsAnswered = question+1;
+        timesList.add(time);
+        this.score = score;
+    }
+
+    public boolean isFinished() { return questionsAnswered >= maxQuestions; }
+    public int getScore() { return score; }
+
+    protected UserStats user;
+    protected int score;
+    protected int maxQuestions;
+    protected List <Double> timesList = new ArrayList<>();
+}
+
+public class QuizGame implements HelperPrimitive {
+    /*  class responsible for actually managing quiz game sessions
+        each QuizGame instance is largely defined by its
+            signal (should be a unique identifier, but that is not checked when constructing)
+            maxQuestions (how large the pool of questions is)
+            and totalQuestions (how many questions will actually be used in a single game session)
+
+        client events that must be handled by this class:
+            quiz begin, sending all required information to the client
+            quiz update, updating a player's information
+                this may potentially trigger the end of the game (when everyone in the same gameroom has finished)
+                as well as updates to the ranking and leaderboard
+     */
+    QuizGame() { }
+
     protected static char beginSignal   = 'B';
-    protected static char restartSignal = 'R';
-    protected static char finishSignal  = 'F';
     protected static char updateSignal  = 'U';
     protected char signal = 'Q';
 
-    protected static String beginAnswer   = "QB";
-    protected static String restartAnswer = "QR";
-    protected static String updateAnswer  = "QU";
-    protected static String selfUpdateAnswer  = "QS";
-    protected static String finishAnswer  = "QF";
-    protected static String selfFinishAnswer  = "QT";
-    protected static String abortAnswer  = "QA";
-    protected static String printAnswer  = "QP";
-    protected static String rankingAnswer  = "QK";
+    protected static String beginAnswer     = "QB";     // sent to client, signals the quiz can start
+        // the webSocket message will also contains a list of numbers representing the questions (2 digits each; "08" = 8, "18" = 18)
+    protected static String abortAnswer     = "QA";     // sent to client, signals the quiz should stop
+    protected static String printAnswer     = "QP";     // sent to client, signals an update to the game leaderboard data
+        // the webSocket message will contain necessary update data (sorted data about each player, separated by '#')
+    protected static String rankingAnswer   = "QK";     // sent to client, signals an update to the current ranking
+        // the webSocket message will also contain the string representing the ranking (i.e. "1/3", "4/6")
 
-    public Boolean initialized;
-    protected void initializeClass(Session session) throws IOException {
-        parser = new AsyncParser(readPath);
-    }
+    //  maxQuestions: represents the whole pool of questions; totalQuestions: represents the actual number of questions in each game
+    //  out of all maxQuestions, only totalQuestions will be used each time
+    public int maxQuestions = 35;
+    public int totalQuestions = 10;
+
+    protected static Map <UserStats, QuizGamedata> gamedataMap = new HashMap<>();
+
+    public boolean isCalled(String str) { return str.charAt(0) == signal; }
 
     static public boolean isInvalid(UserStats stats)  { return !gamedataMap.containsKey(stats); }
+    public static QuizGamedata getGamedataOf(UserStats stats) {
+        if (!gamedataMap.containsKey(stats)) return null;
+        return gamedataMap.get(stats);
+    }
 
     protected void abortGame(Integer ID, UserStats exception) throws IOException {
+        //  parameter exception is needed in cases that session will log off from the site;
+        //      sending a message to such session often crashes execution.
+        //      such situation is met precisely when we are closing a session and trying to update the room
+
         GameroomManager.sendExclusiveMessage(ID, exception,"TQ");
         GameroomManager.sendExclusiveMessage(ID, exception,printAnswer + QuizUtilities.createRankingMessage(ID, exception));
         GameroomManager.sendMessageToMaster (ID, abortAnswer);
@@ -145,7 +164,11 @@ public class QuizGame implements HelperPrimitive {
     }
 
     protected void updateRoom(Integer ID, UserStats exception) throws IOException {
-        boolean bAbort = true;
+        //  parameter exception is needed in cases that session will log off from the site;
+        //      sending a message to such session often crashes execution.
+        //      such situation is met precisely when we are closing a session and trying to update the room
+
+        boolean bAbort = true;          //  tells us whether the game should be aborted or not (all players have finished)
         for (UserStats stats : GameroomManager.getGameroomFriends(ID)) {
             if (!gamedataMap.containsKey(stats)) continue;
             QuizGamedata gamedata = gamedataMap.get(stats);
@@ -154,18 +177,20 @@ public class QuizGame implements HelperPrimitive {
                 bAbort = false;
         }
 
-        List <UserStats> arr = sortGameroomUsers(ID, exception);
+        List <UserStats> arr = QuizUtilities.sortGameroomUsers(ID, exception);
         for (int i=0; i<arr.size(); ++i) {
             UserStats stats = arr.get(i);
-            if (stats != exception) stats.sendMessageToSessions(rankingAnswer + "#" + (i+1) + "/" + arr.size());
+            //  updates ranking
+            if (stats != exception) stats.sendMessage(rankingAnswer + "#" + (i+1) + "/" + arr.size());
         }
 
-        GameroomManager.sendExclusiveMessage(ID, exception, "" + bAbort);
+        if (UserSession.debugMode) GameroomManager.sendExclusiveMessage(ID, exception, "" + bAbort);
 
         String leaderboardData = QuizUtilities.createRankingMessage(ID, exception);
         for (UserStats peer : GameroomManager.getGameroomFriends(ID)) {
             if (peer == exception) continue;
-            peer.sendMessageToSessions(printAnswer + leaderboardData);
+            //  updates leaderboard
+            peer.sendMessage(printAnswer + leaderboardData);
         }
 
         if (bAbort) {
@@ -173,74 +198,70 @@ public class QuizGame implements HelperPrimitive {
         }
     }
 
-    public boolean isCalled(String str) { return str.charAt(0) == signal; }
+    public void open(Session session) throws IOException, EncodeException { }
 
-    public void open(Session session) throws IOException, EncodeException {
-        if (!initialized) initializeClass(session);
-    }
     public void close(Session session) throws IOException, EncodeException {
         if (gamedataMap.containsKey(UserSession.getStats(session))) {
             UserStats stats = UserSession.getStats(session);
+            //  formal null pointer check
             if (getGamedataOf(UserSession.getStats(session)) == null) return;
+            //  this check is required because the different QuizGamedata instances shouldn't work with gamedata for other instances
             if (!(getGamedataOf(stats).signal == signal)) return;
+            //  if the session is a player that plays alone, no further action is required
             if (GameroomManager.checkPlayerGameroomEmpty(stats)) {
                 gamedataMap.remove(stats);
             }
             else {
-                GameroomManager.sendExclusiveMessage(UserSession.getStats(session).getID(), UserSession.getStats(session), "" + getGamedataOf(UserSession.getStats(session)).signal);
+                if (UserSession.debugMode) GameroomManager.sendExclusiveMessage(UserSession.getStats(session).getID(), UserSession.getStats(session), "" + getGamedataOf(UserSession.getStats(session)).signal);
                 gamedataMap.remove(UserSession.getStats(session));
-                GameroomManager.sendExclusiveMessage(UserSession.getStats(session).getID(), UserSession.getStats(session), "map close task 1 done");
+                if (UserSession.debugMode) GameroomManager.sendExclusiveMessage(UserSession.getStats(session).getID(), UserSession.getStats(session), "map close task 1 done");
+                //  otherwise, we must update the room
                 updateRoom(UserSession.getStats(session).getID(), UserSession.getStats(session));
-                GameroomManager.sendExclusiveMessage(UserSession.getStats(session).getID(), UserSession.getStats(session), "map close task 2 done");
+                if (UserSession.debugMode) GameroomManager.sendExclusiveMessage(UserSession.getStats(session).getID(), UserSession.getStats(session), "map close task 2 done");
             }
         }
     }
 
     public void handleMessage(String message, Session session) throws IOException, EncodeException {
-        if (parser != null) {
-            if (parser.isFinished) {
-                initialized = true;
-                for (String line:parser.readData.split("\n"))
-                { rawQuestions.add(line.trim()); }
-                parser = null;
-            }
-        }
-
-        if (message.charAt(0) == beginSignal || message.charAt(0) == restartSignal) {
+        if (message.charAt(0) == beginSignal) {
             UserStats stats = UserSession.getStats(session);
 
             boolean isValidMaster = (stats.isMaster() && GameroomManager.checkMasterGameroom(stats));
+                // master validity: their gameroom contains some players; if their gameroom is empty, there's no point in starting the quiz
             boolean isValidPlayer = (stats.isPlayer() && GameroomManager.checkPlayerGameroomEmpty(stats));
+                // player validity: they are not in any gameroom; if they are in one, the master is supposed to start it
+
             if (GameroomManager.checkPlayerGameroomEmpty(stats)) UserSession.debugPrint(session,"Gameroom is considered empty");
             if (stats.isPlayer()) UserSession.debugPrint(session, "Session is player");
 
             if (stats.isPlayer() && !isValidPlayer) {
-                session.getBasicRemote().sendText("PPNu poți folosi acest buton; lasă-l pe profesor să înceapă.");
+                //  PP messages trigger the display of some helpful information to the client (see "functii.js" for more)
+                session.getBasicRemote().sendText("PP3");
             }
             if (stats.isMaster() && !isValidMaster) {
-                session.getBasicRemote().sendText("PPAcest buton nu poate fi folosit, fiindcă gameroom-ul este gol.");
+                session.getBasicRemote().sendText("PP4");
             }
 
             if (isValidMaster || isValidPlayer) {
                 int ID = stats.getID();
                 UserSession.debugPrint(session,"Here I am");
 
-                StringBuilder entryCode = new StringBuilder();
-                for (String entry:QuizUtilities.generateEntries())
-                { entryCode.append(entry); entryCode.append('#'); }
+                StringBuilder entryCode = new StringBuilder();  // the string we will return containing necessary begin information
+                List <String> entries = QuizUtilities.generateEntries(maxQuestions);
+                for (int entry = 0; entry < totalQuestions; ++entry) {
+                    entryCode.append(entries.get(entry));
+                }
 
                 GameroomManager.toggleGameroomState(session);
 
                 if (isValidMaster) {
-                    if (message.charAt(0) == beginSignal) GameroomManager.sendInclusiveMessage(ID, beginAnswer   + entryCode.toString());
-                    else                                  GameroomManager.sendInclusiveMessage(ID, restartAnswer + entryCode.toString());
+                    GameroomManager.sendInclusiveMessage(ID, beginAnswer   + entryCode.toString());
                     for (UserStats peerStats : GameroomManager.getGameroomFriends(stats.getID()))
-                        gamedataMap.put(peerStats, new QuizGamedata(peerStats, maxQuestions, signal));
+                        gamedataMap.put(peerStats, new QuizGamedata(peerStats, totalQuestions, signal));
                 }
                 else {
-                    if (message.charAt(0) == beginSignal) session.getBasicRemote().sendText(beginAnswer   + entryCode.toString());
-                    else                                  session.getBasicRemote().sendText(restartAnswer + entryCode.toString());
-                    gamedataMap.put(stats, new QuizGamedata(stats, maxQuestions, signal));
+                    session.getBasicRemote().sendText(beginAnswer   + entryCode.toString());
+                    gamedataMap.put(stats, new QuizGamedata(stats, totalQuestions, signal));
                 }
             }
         }   else
@@ -259,15 +280,11 @@ public class QuizGame implements HelperPrimitive {
             UserSession.debugPrint(session, "time: "     + time);
 
             data.increment(question, time, score);
-            session.getBasicRemote().sendText(selfUpdateAnswer + data.answerString());
-            GameroomManager.sendExclusiveMessage(ID, stats,updateAnswer + data.answerString());
 
             if (data.isFinished()) {
                 UserSession.getStats(session).toggleGameState();
                 if (ID != 0)
-                    session.getBasicRemote().sendText("PPAi terminat jocul! Acum așteaptă și pe ceilalți colegi ai tăi să termine.");
-                session.getBasicRemote().sendText(selfFinishAnswer + data.answerString());
-                GameroomManager.sendExclusiveMessage(ID, stats,finishAnswer + data.finishString());
+                    session.getBasicRemote().sendText("PP2");
             }
         }
 

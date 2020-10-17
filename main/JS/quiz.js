@@ -12,6 +12,56 @@ const final      = document.getElementById("showLeaderboard");
 const mesajFinal = document.getElementById("finish");
 const rankingUI  = document.getElementById("rankingUIText");
 
+
+let isAlone = true;
+let isGameFinished = false;
+let job            = false;
+function q_isMaster()  { return job; }
+function toggleJob()   { job = !job; updateQuiz(); }
+function toggleGame()  { isGameFinished = !isGameFinished; updateQuiz(); }
+function toggleAlone() { isAlone = !isAlone; updateQuiz(); }
+
+let finishedMessage       = "Press >>Arata Rezultate<< for leaderboard stats!";
+let unfinishedMessage     = "Waiting for everyone to finish the quiz... >>Arata Rezultate<< button is currently unavailable."
+let finishedMasterMessage = "Press >>Arata Rezultate<< to show the leaderboard of your gameroom. Press >>Reincearca<< to restart the quiz for all your students."
+
+
+let questions = [
+    {   question:"template1",
+        choiceA:"A1",
+        choiceB:"B1",
+        choiceC:"C1",
+        choiceD:"D1",
+        corect:"A"
+    },
+    {
+        question:"template2",
+        choiceA:"A2",
+        choiceB:"B2",
+        choiceC:"C2",
+        choiceD:"D2",
+        corect:"D"
+    },
+    {   question:"template3",
+        choiceA:"A3",
+        choiceB:"B3",
+        choiceC:"C3",
+        choiceD:"D3",
+        corect:"C"
+    }
+];
+
+
+// totalQuestions has a fixed value X; the servers sends > X number of questions; only X are chosen for diversity
+const totalQuestions = 9;
+let   curentQuestion = 0;
+let   score = 0;
+let   restartDone = 0;
+let   leaderboardRawData = "";
+
+
+//  time manipulation
+//  if too much time is spent on the quiz, the quiz will be forcefully closed by sending appropriate data to the backend
 let timelimitInterval = setInterval(function() {}, 30000);
 function timeAbort() {
     for (let i=curentQuestion; i<=totalQuestions; ++i)
@@ -27,63 +77,21 @@ function getTime() {
 }
 var lastTime = getTime();
 
-let questions = [
-    {   question:"template1",
-        choiceA:"A1",
-        choiceB:"B1",
-        choiceC:"C1",
-        choiceD:"D1",
-        corect:"A"
-    },
-    {   
-        question:"template2",
-        choiceA:"A2",
-        choiceB:"B2",
-        choiceC:"C2",
-        choiceD:"D2",
-        corect:"D"
-    },
-    {   question:"template3",
-        choiceA:"A3",
-        choiceB:"B3",
-        choiceC:"C3",
-        choiceD:"D3",
-        corect:"C"
-    }   
-];
 
-let isAlone = true;
-let isGameFinished = false;
-let job            = false;
-function q_isMaster()  { return job; }
-function toggleJob()   { job = !job; updateQuiz(); }
-function toggleGame()  { isGameFinished = !isGameFinished; updateQuiz(); }
-function toggleAlone() { isAlone = !isAlone; updateQuiz(); }
-
-let finishedMessage       = "Press >>Arata Rezultate<< for leaderboard stats!";
-let unfinishedMessage     = "Waiting for everyone to finish the quiz... >>Arata Rezultate<< button is currently unavailable."
-let finishedMasterMessage = "Press >>Arata Rezultate<< to show the leaderboard of your gameroom. Press >>Reincearca<< to restart the quiz for all your students."
-
-// totalQuestions has a fixed value X; the servers sends > X number of questions; only X are chosen for diversity
-const totalQuestions = 9;
-let   curentQuestion = 0;
-let   score = 0;
-let   restartDone = 0;
-let   leaderboardRawData = "";
-
+//  buttons
 start.addEventListener("click",startQuizButton);
-
 function startQuizButton() {
     if (debugWithoutWS) startQuiz();
     else if (wsValidity) ws.send("QB");
 }
 function restartQuizButton() {
     if (debugWithoutWS) restartQuiz();
-    else ws.send("QR");
+    else ws.send("QB");
 }
-function abortQuiz() { showScore();  }
 
+//  quiz functions
 
+function abortQuiz() { showScore(); }
 function showQuestion()
 {
     let aux=questions[curentQuestion];
@@ -105,17 +113,20 @@ function showQuestion()
     else {
         choiceD.style.display = "flex";
     }
+
     question.classList.remove('questioon');
     choiceA.classList.remove('answer');
     choiceB.classList.remove('answer');
     choiceC.classList.remove('answer');
     choiceD.classList.remove('answer');
+
     void question.offsetWidth;
     void choiceA.offsetWidth;
     void choiceB.offsetWidth;
     void choiceC.offsetWidth;
     void choiceD.offsetWidth;
 }
+
 function startQuiz()
 {
     if (!q_isMaster())
@@ -168,6 +179,7 @@ function startQuiz()
         showProgress();
     }
 }
+
 function showProgress()
 {
     for(let quesIndex=0;quesIndex<=totalQuestions;quesIndex++)
@@ -176,6 +188,7 @@ function showProgress()
         restartDone = 1;
     }
 }
+
 function checkAnswer(answer)
 {
     if (q_isMaster()) return;
@@ -187,7 +200,7 @@ function checkAnswer(answer)
     }
     else
         wrongAnswer();
-    
+
     //  to update the server data
     var timeValue = getTime();
     if (!debugWithoutWS) ws.send("QU" + score + "#" + curentQuestion + "#" +  (timeValue - lastTime)*0.001);
@@ -233,10 +246,7 @@ function showScore()
 
     showFinal();
 }
-function restartQuiz()
-{
-    startQuiz();
-}
+
 function showFinal()
 {
     rankingUI.innerHTML = "";
@@ -248,8 +258,9 @@ function showFinal()
     mesajFinal.innerHTML = createLeaderboardData(leaderboardRawData);
 }
 
+//  (largely) BACKEND stuff
+
 //  utility functions
-//      rawdata format: {{user_name}: {score} points#} for each user
 function setLeaderboardRawData(rawdata) {
     leaderboardRawData = rawdata;
     mesajFinal.innerHTML = createLeaderboardData(leaderboardRawData);
@@ -260,6 +271,24 @@ function createLeaderboardData(rawdata) {
         ans += "<p>" + rawline + "</p>";
     }); return ans;
 }
+//  rawdata format: ABCDEF... each 2 consecutive digits represent a number (03 represents 3, 32 represents 32)
+//  actual question data is taken out of "storage.js"
+function initializeQuestions(rawdata) {
+    questions = [];
+    for (let i=0; i<rawdata.toString().length; i += 2) {
+        str = "";
+        if (i+1 < rawdata.toString().length)
+            str = rawdata.toString().substr(i, 2);
+        if (str.length != 0) {
+            arr = quizStrings[parseInt(str)].split("$");
+            if (arr.length != 6) return;
+            questions.push({question:arr[0].toString().trim(), choiceA:arr[1].toString().trim(), choiceB:arr[2].toString().trim(),
+                choiceC :arr[3].toString().trim(), choiceD:arr[4].toString().trim(), corect :arr[5].toString().trim()});
+        }
+    }
+}
+
+//  other frontend functions
 function updateRanking(rank) { rankingUI.innerHTML = "<p>" + rank + "</p>"; }
 function updateQuiz() {
     let flag = false;
@@ -272,14 +301,4 @@ function updateQuiz() {
         scoreHtml.innerHTML = finishedMasterMessage;
     }
     if (flag) scoreHtml.style.display = "none";
-}
-//  rawdata is read from questions.txt; format is: {each line from questions.txt + "#"}
-function initializeQuestions(rawdata) {
-    questions = [];
-    rawdata.toString().split("#").forEach(function (rawquestion) {
-        arr = rawquestion.split("$");
-        if (arr.length != 6) return;
-        questions.push({question:arr[0].toString().trim(), choiceA:arr[1].toString().trim(), choiceB:arr[2].toString().trim(),
-            choiceC :arr[3].toString().trim(), choiceD:arr[4].toString().trim(), corect :arr[5].toString().trim()});
-    });
 }

@@ -56,6 +56,7 @@
             }   else
             if (code === "GD") {
                 addGRName(value);
+                showInformation(value + " a intrat în gameroom!");
                 updateGameroomList();
             }   else
             if (code === "GM") {
@@ -64,6 +65,7 @@
             }   else
             if (code === "GX") {
                 removeGRName(value);
+                showInformation(value + " a ieșit din gameroom!");
                 updateGameroomList();
             }   else
             if (code === "ID") {
@@ -84,7 +86,7 @@
                 redirectToLogin();
             } else
             if (code === "PP") {
-                showInformation(value);
+                showInformation(ppArr[parseInt(value)-1]);
             }
         }
 
@@ -107,12 +109,11 @@
             setCustomInfoClean();
         }
     }
-
 </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
 <body style="overflow: hidden;" class="noselect transitionpage" id="ShowPage">
-<div class="gameroomON">
+<div class="gameroomON" id="gameroomON">
     <div class="players" id="players">
 
     </div>

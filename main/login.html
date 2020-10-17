@@ -22,7 +22,7 @@
     <!-- script for WEBSOCKETS -->
     <script>
         let debugWithoutWS = true;
-        let consoleMode = true;
+        let consoleMode = false;
 
         if (!debugWithoutWS) {
             var ws = new WebSocket(wsString);
@@ -43,6 +43,21 @@
                 }
             }
         }
+    </script>
+
+    <!-- DEBUG CONSOLE: html for debug purposes only -->
+    <textarea title="Chat Log" id="log" readonly
+              style="display: none; width: 100%; height: 100px; resize: none; margin: 0; padding: 0; border: 0;"> </textarea>
+    <input title="Chat Input" id="input" type="text" style="display: none; width: 100%; border-width: 1px 0 1px 0;" autofocus/>
+
+    <!-- script for the DEBUG CONSOLE -->
+    <script>
+        document.getElementById("input").addEventListener("keyup", function (event) {
+            if (event.keyCode === 13) {
+                ws.send(event.target.value);
+                event.target.value = "";
+            }
+        });
     </script>
 
     <!-- DEBUG CONSOLE: html for debug purposes only -->

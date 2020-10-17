@@ -81,12 +81,41 @@
 
 <!-- script for the DEBUG CONSOLE -->
 <script>
-	document.getElementById("input").addEventListener("keyup", function (event) {
-		if (event.keyCode === 13) {
-			ws.send(event.target.value);
-			event.target.value = "";
+	function retryWSInitialization() {
+		if (debugWithoutWS) return;
+		if (wsValidity === true) return;
+		ws.send("*" +           getSessionKeyData());
+	}
+
+	let debugWithoutWS = true;
+	let consoleMode = false;
+
+	if (!debugWithoutWS) {
+		var ws = new WebSocket(wsString);
+
+		ws.onmessage = function (event) {
+			console.log(event.data);
+			if (consoleMode) document.getElementById("log").value += event.data + "\n";
+			code = event.data.toString().substr(0, 2);
+			value = event.data.toString().substr(2);
+
+			if (code === "VV") {
+				wsValidity = true;
+				wsInitializationInterval = clearInterval(wsInitializationInterval);
+			}   else
+			if (code === "ID") {
+				globalID = value;
+				updateGlobal();
+			} else
+			if (code === "XX") {
+				redirectToLogin();
+			}
 		}
-	});
+	}
+
+	window.onload = function() {
+		onloadGeneralTasks();
+	}
 </script>
 
 <body class="noselect transitionpage" id="ShowPage" style="overflow: hidden;">

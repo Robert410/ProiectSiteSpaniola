@@ -92,7 +92,3 @@ function changeviewtoContacte(){
 
 btns.forEach(btn => btn.addEventListener('click', btnCheck));
 options.forEach(option => option.addEventListener('click', optionFunc));
-
-function showquestion(){
-    document.getElementById("question").style.opacity="1";
-}

@@ -232,6 +232,7 @@ function createLeaderboardData(rawdata) {
         ans += "<p>" + rawline + "</p>";
     }); return ans;
 }
+
 //  rawdata is read from questions.txt; format is: {each line from comunitati.xt + "#"}
 function initializeQuestions(rawdata) {
     let order = [
@@ -242,19 +243,18 @@ function initializeQuestions(rawdata) {
 
     locatii = [];
     fullNameUpdated = [];
-    rawdata.toString().split("#").forEach(function (rawquestion) {
-        for (let i = 0; i < totalQuestions; ++i) {
-            if (fullName[i] === rawquestion) {
-                locatii.push(order[i]);
-                fullNameUpdated.push(fullName[i]);
-                return;
-            }
+    for (let i=0; i<rawdata.toString().length; i += 2) {
+        str = "";
+        if (i+1 < rawdata.toString().length)
+            str = rawdata.toString().substr(i, 2);
+        if (str.length != 0) {
+            if (str[0] === '0')
+                str = str.substr(1);
+            let index = parseInt(str);
+            fullNameUpdated.push(fullName[index]);
+            locatii.push(order[index]);
         }
-    });
-}
-
-function updateQuiz() {
-    
+    }
 }
 
 function insulehover(){

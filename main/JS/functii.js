@@ -1,6 +1,20 @@
 let globalID = "-";
 let gobacklink = 0;
 
+let ppArr = [
+    "Profesorul a ieșit! Gameroom-ul nu mai este valabil, dar dacă te jucai, vei putea continua în modul single-player.",
+    "Ai terminat jocul! Acum așteaptă și pe ceilalți colegi ai tăi să termine.",
+    "Nu poți folosi acest buton; lasă-l pe profesor să înceapă.",
+    "Acest buton nu poate fi folosit, fiindcă gameroom-ul este gol.",
+    "Nu poti folosi acest buton; lasa-l pe profesor sa inceapa.",
+    "Acest buton nu poate fi folosit, fiindca gameroom-ul este gol.",
+    "Nu poți să te muți din gameroom până nu îți termini jocul!",
+    "Gameroom-ul deja se joacă, nu te poți conecta acum :( Așteaptă să se termine jocul!",
+    "Nu te afli pe pagina potrivită a gameroom-ului.",
+    "Ai intrat în gameroom!",
+    "ID-ul introdus nu există. Întreabă-l pe profesor ID-ul."
+]
+
 let LONG_MESSAGE_LENGTH = 50;
 let intvPersistance = false;
 
@@ -23,7 +37,7 @@ function initializeSet(rawstring) {
     });
 }
 function getGameroomNameList() {
-    if (gameroomNameSet.size === 1) return "Se pare ca esti pe cont propriu!";
+    if (gameroomNameSet.size <= 1) return "Se pare ca esti pe cont propriu!";
 
     let ans = "Lista de oameni din gameroom: (" + gameroomNameSet.size + ")\n";
 
@@ -45,9 +59,16 @@ let wsString = "ws://localhost:8080/proiect_site_spaniola_war_exploded/ws";
 
 //  sometimes messages aren't probably sent through webscokets; this is a variable used as a last resort
 let wsInitializationInterval = setInterval(function(){},100000);
+let wsInitializationInterval2 = setInterval(function(){},100000);
 function onloadGeneralTasks() {
     wsValidity = false;
-    wsInitializationInterval = setInterval(function(){retryWSInitialization();},5000);
+    try {
+        retryWSInitialization();
+    }
+    catch (err) {}
+
+    wsInitializationInterval2 = setInterval(function(){retryWSInitialization();},500);
+    wsInitializationInterval = setInterval(function(){retryWSInitialization();},4000);
     if (getSessionData("username").length < 4) {
         redirectToLogin();
     }

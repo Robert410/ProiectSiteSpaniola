@@ -3,13 +3,8 @@ package serverClasses;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.ArrayList;
-
-//  authentication helper signal: 'A'
-//  quiz           helper signal: 'Q'
 
 @ServerEndpoint("/ws")
 public class UserSession {
@@ -17,6 +12,8 @@ public class UserSession {
     public static UserStats getStats(Session session) {
         return (UserStats) session.getUserProperties().get(statsMapString);
     }
+
+    private static List <HelperPrimitive> helpers = new ArrayList<>();
 
     //  helper classes functionality
     private void openHelpers(Session session) throws IOException, EncodeException {
@@ -26,8 +23,6 @@ public class UserSession {
     private void closeHelpers(Session session) throws IOException, EncodeException {
         for (HelperPrimitive helper : helpers) helper.close(session);
     }
-    private static List <HelperPrimitive> helpers = new ArrayList<>();
-    private static HelperPrimitive request = null;
     private static void addHelper(HelperPrimitive helper) {
         helpers.add(helper);
     }
@@ -38,8 +33,13 @@ public class UserSession {
         addHelper(new BingoGame());
     }
 
+
     //  private data
+    private HelperPrimitive request = null;
+
     private static String statsMapString = "S";
+
+    //  close functions
     private void closePlayerSession(Session session) throws IOException {
         if (debugMode) GameroomManager.sendExclusiveMessage(getStats(session).getID(), getStats(session),"hey1");
         GameroomManager.onRemovalTasks(session);
@@ -61,7 +61,8 @@ public class UserSession {
     @OnClose
     public void close(Session session) throws IOException, EncodeException {
         if (getStats(session).isMaster() && GameroomManager.checkMasterGameroom(getStats(session))) {
-            GameroomManager.sendMessage(getStats(session).getID(), "PPProfesorul a ieșit! Gameroom-ul nu mai este valabil, dar dacă te jucai, vei putea continua în modul single-player.");
+            GameroomManager.sendMessage(getStats(session).getID(), "PP1");
+            //  GM - resets the gameroom name set
             GameroomManager.sendMessage(getStats(session).getID(), "GM");
         }
         closeHelpers(session);
@@ -78,13 +79,13 @@ public class UserSession {
 
     @OnMessage
     public void handleMessage(String message, Session session) throws IOException, EncodeException {
-        if (message.charAt(0) == '%') {
+        if (message.charAt(0) == '%') {         //  client page update
             if (getStats(session) == null) return;
             getStats(session).currentPage = message.substring(1);
             return;
         }
 
-        if (message.charAt(0) == '*') {
+        if (message.charAt(0) == '*') {         //  websockets initialization message
             String[] arr = message.substring(1).split("#");
             handleMessage("AN" + arr[0], session);
             if (arr[1].equals("player")) handleMessage("AJE", session);
@@ -110,7 +111,7 @@ public class UserSession {
     }
 
     //  debugging purposes
-    public static boolean debugMode = true;
+    public static boolean debugMode = false;
     public static void debugPrint(Session session, String message) {
         if (!debugMode) return;
         try {
