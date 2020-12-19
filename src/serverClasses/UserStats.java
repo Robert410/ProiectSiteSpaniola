@@ -1,13 +1,10 @@
 package serverClasses;
 
-import java.util.Set;
-import java.util.HashSet;
+import java.util.*;
 
 import java.io.IOException;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
-import java.util.List;
-import java.util.ArrayList;
 
 /*  helps the server track data of an user
         all usernames are be distinct
@@ -18,8 +15,55 @@ import java.util.ArrayList;
 */
 
 public class UserStats {
+    private static final char[] IDcharacters = {
+            'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
+    };
+    private static boolean bInitialized = false;
+    private static void initialize() {
+        if (bInitialized) return;
+        bInitialized = true;
+        for (char ch1 : IDcharacters) {
+            for (char ch2 : IDcharacters) {
+                final char[] masterCharArray = {'^', ch1, ch2};
+                masterIDSet.add(String.valueOf(masterCharArray));
+                for (char ch3: IDcharacters) {
+                    final char[] charArray = {ch1, ch2, ch3};
+                    IDSet.add(String.valueOf(charArray));
+                }
+            }
+        }
+    }
+
+    private String strID = "";
+    private void createID() {
+        if (!strID.equals("")) {
+            if (strID.charAt(0) == '^') {
+                masterIDSet.add(strID);
+            }
+            else {
+                IDSet.add(strID);
+            }
+        }
+
+        if (isPlayer()) {
+            strID = IDSet.stream().skip(new Random().nextInt(IDSet.size())).findFirst().orElse(null);
+            IDSet.remove(strID);
+        }
+        else {
+            strID = masterIDSet.stream().skip(new Random().nextInt(masterIDSet.size())).findFirst().orElse(null);
+            masterIDSet.remove(strID);
+        }
+    }
+    public String getStrID() {
+        return strID;
+    }
+
     UserStats(Session session) {
         createGuestName(session);
+        initialize();
+        createID();
     }
 
     //  static data
@@ -36,6 +80,8 @@ public class UserStats {
 
     public void remove(Session session) {
         usernamesSet.remove(name);
+        if (isPlayer()) IDSet.add(strID);
+        else masterIDSet.add(strID);
     }
 
     //  getters and setters
@@ -43,7 +89,7 @@ public class UserStats {
     public void    setID(int ID)       { this.ID  = ID; }
     public boolean isPlayer()          { return !job; }
     public boolean isMaster()          { return job;  }
-    public void    setJob(boolean job) { this.job = job; }
+    public void    setJob(boolean job) { this.job = job; createID(); }
 
     public void    toggleGameState()   { inGame = !inGame; }
     public boolean getGameState()      { return inGame; }
@@ -72,4 +118,7 @@ public class UserStats {
         usernamesSet.add(name);
         this.session = session;
     }
+
+    private static Set <String> IDSet = new HashSet<>();
+    private static Set <String> masterIDSet = new HashSet<>();
 }

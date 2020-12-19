@@ -41,7 +41,7 @@ class QuizUtilities {
         double timeSum = gamedata.timesList.stream().mapToDouble(a->a).sum();
         int temp = (int)(timeSum * 1000.0);
         timeSum = ((double)temp)/1000.0;
-        return stats.getName() + ": " + QuizGame.getGamedataOf(stats).getScore() + " points, " + gamedata.questionsAnswered + "/" + gamedata.maxQuestions + ", " + timeSum +"s#";
+        return stats.getStrID() + "!" + QuizGame.getGamedataOf(stats).getScore() + "!" + gamedata.questionsAnswered + "!" + timeSum +"#";
     }
 
     public static int userCompare(UserStats x, UserStats y) {
@@ -96,6 +96,14 @@ class QuizGamedata {
     public boolean isFinished() { return questionsAnswered >= maxQuestions; }
     public int getScore() { return score; }
 
+    public boolean shouldUpdateRanking(int ranking) {
+        if (isFinished()) return false;
+        if (previousRanking == ranking) return false;
+        previousRanking = ranking;
+        return true;
+    }
+
+    protected int previousRanking = -1;
     protected UserStats user;
     protected int score;
     protected int maxQuestions;
@@ -150,13 +158,13 @@ public class QuizGame implements HelperPrimitive {
         //      such situation is met precisely when we are closing a session and trying to update the room
 
         GameroomManager.sendExclusiveMessage(ID, exception,"TQ");
-        GameroomManager.sendExclusiveMessage(ID, exception,printAnswer + QuizUtilities.createRankingMessage(ID, exception));
+        //  GameroomManager.sendExclusiveMessage(ID, exception,printAnswer + QuizUtilities.createRankingMessage(ID, exception));
         GameroomManager.sendMessageToMaster (ID, abortAnswer);
         for (UserStats stats : GameroomManager.getGameroomFriends(ID)) gamedataMap.remove(stats);
     }
     protected void abortGame(Session session) {
         try {
-            session.getBasicRemote().sendText(printAnswer + QuizUtilities.createRankingMessage(UserSession.getStats(session)));
+            //  session.getBasicRemote().sendText(printAnswer + QuizUtilities.createRankingMessage(UserSession.getStats(session)));
             session.getBasicRemote().sendText("TQ");
             session.getBasicRemote().sendText(abortAnswer);
         }   catch (IOException e) {}
@@ -181,17 +189,11 @@ public class QuizGame implements HelperPrimitive {
         for (int i=0; i<arr.size(); ++i) {
             UserStats stats = arr.get(i);
             //  updates ranking
-            if (stats != exception) stats.sendMessage(rankingAnswer + "#" + (i+1) + "/" + arr.size());
+            if (stats != exception && gamedataMap.get(stats).shouldUpdateRanking(i+1))
+                stats.sendMessage(rankingAnswer + "#" + (i+1));
         }
 
         if (UserSession.debugMode) GameroomManager.sendExclusiveMessage(ID, exception, "" + bAbort);
-
-        String leaderboardData = QuizUtilities.createRankingMessage(ID, exception);
-        for (UserStats peer : GameroomManager.getGameroomFriends(ID)) {
-            if (peer == exception) continue;
-            //  updates leaderboard
-            peer.sendMessage(printAnswer + leaderboardData);
-        }
 
         if (bAbort) {
             abortGame(ID, exception);
@@ -223,7 +225,14 @@ public class QuizGame implements HelperPrimitive {
     }
 
     public void handleMessage(String message, Session session) throws IOException, EncodeException {
+        UserSession.debugPrint(session, "" + "hello");
         if (message.charAt(0) == beginSignal) {
+            if (message.length() > 1 && message.charAt(1) == '#') {
+                String[] arr = message.split("#");
+                maxQuestions = Integer.parseInt(arr[1]);
+                totalQuestions = Integer.parseInt(arr[2]);
+            }
+
             UserStats stats = UserSession.getStats(session);
 
             boolean isValidMaster = (stats.isMaster() && GameroomManager.checkMasterGameroom(stats));
@@ -282,17 +291,40 @@ public class QuizGame implements HelperPrimitive {
             data.increment(question, time, score);
 
             if (data.isFinished()) {
+                UserSession.debugPrint(session, "finallllllllll");
+                UserSession.debugPrint(session, "finalx");
+                UserSession.debugPrint(session, "final2");
+                UserSession.debugPrint(session, "final3");
+
                 UserSession.getStats(session).toggleGameState();
-                if (ID != 0)
+                UserSession.debugPrint(session, "final5");
+                if (ID != 0) {
+                    String leaderboardData = QuizUtilities.createRankingMessage(ID, null);
+                    stats.sendMessage(printAnswer + leaderboardData);
                     session.getBasicRemote().sendText("PP2");
+                }
+                else {
+                    UserSession.debugPrint(session, "final6");
+                    abortGame(session);
+                    UserSession.debugPrint(session, "final7");
+                }
+                UserSession.debugPrint(session, "final4");
+            }
+
+            String leaderboardData = QuizUtilities.createRankingMessage(stats);
+            for (UserStats peer : GameroomManager.getGameroomFriends(ID)) {
+                if (gamedataMap.get(peer).isFinished() || peer.isMaster())
+                    peer.sendMessage(printAnswer + leaderboardData);
             }
         }
 
         UserStats stats = UserSession.getStats(session);
         boolean isValidPlayer = (stats.isPlayer() && GameroomManager.checkPlayerGameroomEmpty(stats));
+        UserSession.debugPrint(session, "" + isValidPlayer);
         if (isValidPlayer) {
             QuizGamedata gamedata = gamedataMap.get(stats);
             if (gamedata != null) {
+                UserSession.debugPrint(session, "final2xxxxx");
                 if (gamedata.isFinished()) abortGame(session);
             }
         }   else

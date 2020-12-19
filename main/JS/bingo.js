@@ -1,3 +1,5 @@
+let selected_bingo = "basic";
+
 function startBingoButtonPress() {
     if (!debugWithoutWS) {
         if (wsValidity) ws.send("BB");
@@ -15,20 +17,7 @@ function endBingo() {
 }
 
 var aux, cnt=0;
-var anum=[],num=[];
-var numere=new Array("uno","dos","tres","cuatro","cinco",
-    "seis","siete","ocho","nueve","diez","once","doce","trece",
-    "catorce","quince","dieciséis","diecisiete","dieciocho",
-    "diecinueve","veinte","veintiuno","veintidós","veintitrés",
-    "veinticuatro","veinticinco","veintiséis","veintisiete",
-    "veintiocho","veintinueve","treinta","treinta y uno",
-    "treinta y dos","treinta y tres","treinta y cuatro",
-    "treinta y cinco","treinta y seis","treinta y siete",
-    "treinta y ocho","treinta y nueve","cuarenta","cuarenta y uno",
-    "cuarenta y dos","cuarenta y tres","cuarenta y cuatro",
-    "cuarenta y cinco","cuarenta y seis","cuarenta y siete",
-    "cuarenta y ocho","cuarenta y nueve","cincuenta"
-);
+var anum=[], num=[]
 var randomizer = new Array();
 function isBingo()
 {
@@ -50,6 +39,8 @@ function isBingo()
 }
 function startBingo()
 {
+    let numere = json_bingoData[selected_bingo]["data"]
+
     hideComentariu();
     intvPersistance = false; clearInterval(printInterval);
 
@@ -109,6 +100,8 @@ function gen()
 }
 function verificare(g1)
 {
+    let numere = json_bingoData[selected_bingo]["data"]
+
     for(var i=1;i<=16;i++)
     {
         num[i].onmousedown=false;

@@ -12,6 +12,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="imagini/tab//favicon-16x16.png">
     <link rel="manifest" href="imagini/tab//site.webmanifest">
     <link rel="mask-icon" href="imagini/tab//safari-pinned-tab.svg" color="#5bbad5">
+
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
 
@@ -26,7 +27,11 @@
 
     <script type="text/javascript" src="JS/main.js"></script>
     <script src="JS/functii.js"></script>
-    <script src="JS/storage.js"></script>
+    <script src="JS/websockets.js"></script>
+    <script src="JS/information_popup.js"></script>
+    <script src="JS/gameroom_information.js"></script>
+
+    <script src="JS/storage/storage_quiz.js"></script>
 
 </head>
 
@@ -38,12 +43,9 @@
     function retryWSInitialization() {
         if (debugWithoutWS) return;
         if (wsValidity === true) return;
-        ws.send("*" +           getSessionKeyData());
+        ws.send("*" + getSessionKeyData());
         ws.send("%" + "quiz");
     }
-
-    let debugWithoutWS = true;
-    let consoleMode = false;
 
     if (!debugWithoutWS) {
         var ws = new WebSocket(wsString);
@@ -54,59 +56,37 @@
             code = event.data.toString().substr(0, 2);
             value = event.data.toString().substr(2);
 
-            if (code === "VV") {
-                wsValidity = true;
-                wsInitializationInterval = clearInterval(wsInitializationInterval);
-            }   else
-            if (code === "GS") {
-                initializeSet(value);
-                updateGameroomList();
-            }   else
-            if (code === "GD") {
-                addGRName(value);
-                showInformation(value + " a intrat în gameroom!");
-                updateGameroomList();
-            }   else
-            if (code === "GM") {
-                resetGRSet();
-                updateGameroomList();
-            }   else
-            if (code === "GX") {
-                removeGRName(value);
-                showInformation(value + " a ieșit din gameroom!");
-                updateGameroomList();
-            }   else
-            if (code === "ID") {
-                globalID = value;
-                updateGlobal();
-            } else if (code === "QB") {
+            if (code === "QB") {     // quiz begin
                 if (consoleMode) document.getElementById("log").value += "the quiz should start" + "\n";
                 if (consoleMode) document.getElementById("log").value += event.data.toString().substr(2) + "\n";
                 initializeQuestions(value);
                 startQuiz();
-            } else if (code === "QR") {
+            } else if (code === "QR") {     // quiz restart
                 if (consoleMode) document.getElementById("log").value += "the quiz should restart" + "\n";
                 initializeQuestions(value);
                 restartQuiz();
-            } else if (code === "QA") {
-                abortQuiz();                          /* !!! */
-            } else if (code === "QP") {               /* !!! */
+            } else if (code === "QA") {     // request to abort the quiz
+                showScore();
+                updateLeaderboardHTML();
+            } else if (code === "QP") {     // leaderboard data
                 if (consoleMode) document.getElementById("log").value += "received leadeboard data!" + "\n";
-                setLeaderboardRawData(value);
-            } else if (code === "QK") {
+                updateLeaderboardData(value);
+                updateLeaderboardHTML();
+            } else if (code === "QK") {     // ranking update (#1/5, #3/5)
                 updateRanking(value);
             } else if (code === "TJ") {
-                toggleJob();
+                q_toggleJob();
             } else if (code === "TQ") {
-                toggleGame();                         /* !!! */
+                q_toggleGame();
             } else if (code === "TA") {
-                toggleAlone();
-            } else
-            if (code === "XX") {
-                redirectToLogin();
-            } else
-            if (code === "PP") {
-                showInformation(ppArr[parseInt(value)-1]);
+                q_toggleAlone();
+            }
+            else {
+                checkGeneralEvents(code, value);
+                checkGameroomEvents(code, value);
+                if (code[0] === 'G') {
+                    updateLeaderboardHTML();
+                }
             }
         }
 
@@ -129,6 +109,10 @@
             setCustomInfoClean();
         }
     }
+
+    function startOnclickWrapper() {
+        startQuizButton();
+    }
 </script>
 
 
@@ -141,96 +125,96 @@
         <img src="imagini/imagini-butoane/grunge-arrow-2-3.png" alt="GameRoom" class="imgaranj" onclick="showplayers()">
     </div>
 </div>
-    <div id="warning-message">
-        acest site este disponibil doar in modul peisaj
-  	</div>
-	<div id="wrapper">
-        <div id="comentarii" class="comentariu">
-            <img src="imagini/imagini-butoane/blankcolor.png" style="width: 800%; height: 100%;">
-            <p id="comentariitext">this website is only viewable in landscape mode</p>
-        </div>
-        <!-- navbar -->
-        <a style="top: 2vh; left: 0;" href="main.html" class="navbar">
-            <!-- <span class="slant1" style="color: white;">HOME</span> -->
-            <img src="imagini/imagini-butoane/main_umplut.png" style=" width: 100%; height: 100%; height: 15vh; width: 10vw;" >
-        </a>
+<div id="warning-message">
+    acest site este disponibil doar in modul peisaj
+</div>
+<div id="wrapper">
+    <div id="comentarii" class="comentariu">
+        <img src="imagini/imagini-butoane/blankcolor.png" style="width: 800%; height: 100%;">
+        <p id="comentariitext">this website is only viewable in landscape mode</p>
+    </div>
+    <!-- navbar -->
+    <a style="top: 2vh; left: 0;" href="main.html" class="navbar">
+        <!-- <span class="slant1" style="color: white;">HOME</span> -->
+        <img src="imagini/imagini-butoane/main_umplut.png" style=" width: 100%; height: 100%; height: 15vh; width: 10vw;" >
+    </a>
 
-        <a style="top: 66vh; height: 16%;" href="inv.html" class="navbar">
-            <!-- <span style="font-size: 4vh;" class="slant">Learn</span> -->
-            <img src="imagini/imagini-butoane/learn_umplut.png" style=" width: 100%; height: 100%; height: 15vh; width: 10vw;" >
+    <a style="top: 66vh; height: 16%;" href="inv.html" class="navbar">
+        <!-- <span style="font-size: 4vh;" class="slant">Learn</span> -->
+        <img src="imagini/imagini-butoane/learn_umplut.png" style=" width: 100%; height: 100%; height: 15vh; width: 10vw;" >
+    </a>
+    <div style="list-style-type: none;z-index: 999;">
+        <a href="harti.html" class="imgg" style="top: 18vh;">
+            <img src="imagini/imagini-butoane/spania_umplu.png" style=" width: 100%; height: 100%; height: 15vh; width: 10vw;" >
         </a>
-        <div style="list-style-type: none;z-index: 999;">
-            <a href="harti.html" class="imgg" style="top: 18vh;">
-                <img src="imagini/imagini-butoane/spania_umplu.png" style=" width: 100%; height: 100%; height: 15vh; width: 10vw;" >
-            </a>
-            <a href="bingo.html" class="imgg" style="top: 34vh;">
-                <img src="imagini/imagini-butoane/bingo_umplut.png" style=" width: 100%; height: 100%; height: 15vh; width: 10vw;">
-            </a>
-            <a href = "principal_quiz.html" class="imgg" style=" top: 50vh;">
-                <img src="imagini/imagini-butoane/quiz_umplut.png" style=" width: 100%; height: 100%; height: 15vh; width: 10vw;" >
-            </a>
-            <a href="#">
+        <a href="bingo.html" class="imgg" style="top: 34vh;">
+            <img src="imagini/imagini-butoane/bingo_umplut.png" style=" width: 100%; height: 100%; height: 15vh; width: 10vw;">
+        </a>
+        <a href = "principal_quiz.html" class="imgg" style=" top: 50vh;">
+            <img src="imagini/imagini-butoane/quiz_umplut.png" style=" width: 100%; height: 100%; height: 15vh; width: 10vw;" >
+        </a>
+        <a href="#">
             <img class="buton" onclick="openForm()" id="removee" src="imagini/imagini-butoane/room_umplut.png"
                  style=" height: 16vh; width: 10vw;"></img></a>
-            <div style="display: none;z-index: 999;"id="myForm">
-                <li class="GR">
-                    <!--<div class="middle1"; id="gameroomIDUI"><input class="inputu"; id="GRinput"></div>-->
-                    <div id="gameroomIDUI"><input class="inputu"; id="GRinput"></div>
-                </li>
-                <button class="close" onclick="closeForm()">Enter</button>
-            </div>
+        <div style="display: none;z-index: 999;"id="myForm">
+            <li class="GR">
+                <!--<div class="middle1"; id="gameroomIDUI"><input class="inputu"; id="GRinput"></div>-->
+                <div id="gameroomIDUI"><input class="inputu"; id="GRinput"></div>
+            </li>
+            <button class="close" onclick="closeForm()">Enter</button>
         </div>
-        <div class="scrisvertical">HOME</div>
-        <div class="scrisvertical" style="top: 20vh;">HARTI</div>
-        <div class="scrisvertical" style="top: 36vh;">BINGO</div>
-        <div class="scrisvertical" style="top: 53vh;">QUIZ</div>
-        <div class="scrisvertical" style="top: 68vh;">LEARN</div>
-        <div class="scrisvertical" style="top: 85vh;">ROOM</div>
-        <div class="scrisvertical" style="top: 82vh; left: 5vw; writing-mode: horizontal-tb">GAME</div>
-        <!-- SFARSIT NAVBAR  -->
+    </div>
+    <div class="scrisvertical">HOME</div>
+    <div class="scrisvertical" style="top: 20vh;">HARTI</div>
+    <div class="scrisvertical" style="top: 36vh;">BINGO</div>
+    <div class="scrisvertical" style="top: 53vh;">QUIZ</div>
+    <div class="scrisvertical" style="top: 68vh;">LEARN</div>
+    <div class="scrisvertical" style="top: 85vh;">ROOM</div>
+    <div class="scrisvertical" style="top: 82vh; left: 5vw; writing-mode: horizontal-tb">GAME</div>
+    <!-- SFARSIT NAVBAR  -->
 
     <div id="rankingUIText"></div>
-<div id="container">
-    <div id="start">Începe quizul!
-    </div>
-    <div id="quiz" style="display: none; transition: opacity 1s;">
-        <div id="question" class="questioon"></div>
-        <div id="choices">
-            <div class="answer" id="A" onclick="checkAnswer('A')" style="margin-top:5vh;">
-                <div class="boxanswer">
-                  <div class="contentasnwer">
-                  </div>
-                </div>
-              </div>
-              <div class="answer" id="B" onclick="checkAnswer('B')">
-                <div class="boxanswer">
-                  <div class="contentasnwer">
-                  </div>
-                </div>
-              </div>
-              <div class="answer" id="C" onclick="checkAnswer('C')">
-                <div class="boxanswer">
-                  <div class="contentasnwer">
-                  </div>
-                </div>
-              </div>
-              <div class="answer" id="D" onclick="checkAnswer('D')" style="display:none">
-                <div class="boxanswer">
-                  <div class="contentasnwer">
-                  </div>
-                </div>
-              </div>
+    <div id="container">
+        <div id="start" onclick="startOnclickWrapper()">Începe quizul!
         </div>
-        <div id="progress"></div>
+        <div id="quiz" style="display: none; transition: opacity 1s;">
+            <div id="question" class="questioon"></div>
+            <div id="choices">
+                <div class="answer" id="A" onclick="checkAnswer('A')" style="margin-top:5vh;">
+                    <div class="boxanswer">
+                        <div class="contentasnwer">
+                        </div>
+                    </div>
+                </div>
+                <div class="answer" id="B" onclick="checkAnswer('B')">
+                    <div class="boxanswer">
+                        <div class="contentasnwer">
+                        </div>
+                    </div>
+                </div>
+                <div class="answer" id="C" onclick="checkAnswer('C')">
+                    <div class="boxanswer">
+                        <div class="contentasnwer">
+                        </div>
+                    </div>
+                </div>
+                <div class="answer" id="D" onclick="checkAnswer('D')" style="display:none">
+                    <div class="boxanswer">
+                        <div class="contentasnwer">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="progress"></div>
+        </div>
+        <div id="score"></div>
+        <div id="restart">ReÎncearca!</div>
+        <div id="showLeaderboard">Arată Rezultate</div>
+        <div id="finish"></div>
     </div>
-    <div id="score"></div>
-    <div id="restart">ReÎncearca!</div>
-    <div id="showLeaderboard">Arată Rezultate</div>
-    <div id="finish"></div>
-</div>
-<script src="JS/quiz.js"></script>
 </div>
 
+    <script src="JS/quiz.js"></script>
 
 </body>
 </html>

@@ -1,117 +1,12 @@
 let globalID = "-";
 let gobacklink = 0;
 
-let ppArr = [
-    "Profesorul a ieșit! Gameroom-ul nu mai este valabil, dar dacă te jucai, vei putea continua în modul single-player.",
-    "Ai terminat jocul! Acum așteaptă și pe ceilalți colegi ai tăi să termine.",
-    "Nu poți folosi acest buton; lasă-l pe profesor să înceapă.",
-    "Acest buton nu poate fi folosit, fiindcă gameroom-ul este gol.",
-    "Nu poti folosi acest buton; lasa-l pe profesor sa inceapa.",
-    "Acest buton nu poate fi folosit, fiindca gameroom-ul este gol.",
-    "Nu poți să te muți din gameroom până nu îți termini jocul!",
-    "Gameroom-ul deja se joacă, nu te poți conecta acum :( Așteaptă să se termine jocul!",
-    "Nu te afli pe pagina potrivită a gameroom-ului.",
-    "Ai intrat în gameroom!",
-    "ID-ul introdus nu există. Întreabă-l pe profesor ID-ul."
-]
-
-let LONG_MESSAGE_LENGTH = 50;
-let intvPersistance = false;
-
-let gameroomNameSet = new Set();
-function addGRName(string) {
-    gameroomNameSet.add(string);
-}
-function removeGRName(string) {
-    gameroomNameSet.delete(string);
-}
-function resetGRSet(string) {
-    gameroomNameSet.clear();
-    addGRName(getSessionData("username"));
-}
-function initializeSet(rawstring) {
-    gameroomNameSet.clear();
-    rawstring.toString().split("#").forEach(function (name) {
-        if (name.length > 4)
-            gameroomNameSet.add(name);
-    });
-}
-function getGameroomNameList() {
-    if (gameroomNameSet.size <= 1) return "Se pare ca esti pe cont propriu!";
-
-    let ans = "Lista de oameni din gameroom: (" + gameroomNameSet.size + ")\n";
-
-    let idx = 1;
-    for (let name of gameroomNameSet.values())  {
-        ans += idx + ". " + name;
-        if (name === getSessionData("username")) ans += " (asta esti tu!)";
-        ans += '\n';
-        idx ++;
-    }
-    return ans;
-}
-function updateGameroomList() {
-    addGRName(getSessionData("username"));
-    document.getElementById('players').innerText = getGameroomNameList();
-}
-
-let wsString = "ws://localhost:8080/proiect_site_spaniola_war_exploded/ws";
-
-//  sometimes messages aren't probably sent through webscokets; this is a variable used as a last resort
-let wsInitializationInterval = setInterval(function(){},100000);
-let wsInitializationInterval2 = setInterval(function(){},100000);
-function onloadGeneralTasks() {
-    wsValidity = false;
-    try {
-        retryWSInitialization();
-    }
-    catch (err) {}
-
-    wsInitializationInterval2 = setInterval(function(){retryWSInitialization();},500);
-    wsInitializationInterval = setInterval(function(){retryWSInitialization();},4000);
-    if (getSessionData("username").length < 4) {
-        redirectToLogin();
-    }
-    if (consoleMode) {
-        document.getElementById("log").style.display = "inline-block";
-        document.getElementById("input").style.display = "inline-block";
-        document.getElementById("log").value += getSessionKeyData() + isMaster() + getSessionData("job") + "#" + "\n";
-    }
-    else {
-        document.getElementById("log").style.display = "none";
-        document.getElementById("input").style.display = "none";
-    }
-    if (isMaster()) {
-        document.getElementById("GRinput").style.display = "none";
-    }
-}
 
 function updateGlobal() {
     document.getElementById("gameroomIDUI").style.display = "block";
     document.getElementById("gameroomIDUI").innerHTML = globalID;
 }
 
-let printInterval = setInterval(function() {}, 30000);
-function showComentariu(message) {
-    document.getElementById("comentarii").style.display = "flex";
-    document.getElementById("comentariitext").innerText = message;
-}
-function hideComentariu(message) {
-    document.getElementById("comentarii").style.display = "none";
-}
-
-function showInformation(message, persistance = false) {
-    if (intvPersistance) return;
-    intvPersistance = persistance;
-    clearInterval(printInterval);
-    showComentariu(message);
-    var timeout = 4000;
-    if (message.toString().length >= LONG_MESSAGE_LENGTH) timeout *= 2;
-    printInterval = setInterval(function() { hideComentariu(); intvPersistance = false; clearInterval(printInterval);}, timeout);
-}
-function setCustomInfoClean() {
-    clearInterval(printInterval);
-}
 
 function openForm() {
     document.getElementById("myForm").style.display = "block";
@@ -125,6 +20,8 @@ function openForm() {
         document.getElementById("GRinput").innerText = globalID;
     }
 }
+
+
 function closeForm() {
     if (!isMaster()) {
         globalID = document.getElementById("GRinput").value.toString().trim();
@@ -132,9 +29,6 @@ function closeForm() {
     }
     document.getElementById("myForm").style.display = "none";
     document.getElementById("removee").style.display = "block";
-}
-function color() {
-    document.getElementById("harta").style.color="white";
 }
 
 
@@ -165,16 +59,10 @@ function setPlayerName(name) {
     setSessionData("username", name);
 }
 
+
 function getSessionKeyData() {
     return getSessionData("username") + "#" + getSessionData("job");
 }
-
-var wsValidity = false;
-function isSessionInvalid() {
-    return wsValidity;
-}
-
-//  functions replacing the cookie functions pre-update
 function setSessionData(cname, cvalue) {
     window.sessionStorage.setItem(cname, cvalue);
 }
@@ -184,33 +72,13 @@ function getSessionData(cname) {
     return ptr;
 }
 
+
 function boom(){
     document.getElementById("okk").style.display ="block";
 }
-
 function nolink(){
     gobacklink++;
 }
-
 function goback(){
     window.history.go(-gobacklink-1);
-}
-
-
-
-var buttonplayersState = false;
-function showplayers(){
-    if(buttonplayersState === false){
-        document.getElementById('players').style.opacity = "1";
-        document.getElementById('players').style.marginLeft = "0";
-        document.getElementById('gameroomON').style.zIndex = "4";
-        updateGameroomList();
-        buttonplayersState = true;
-    }
-    else{
-        document.getElementById('players').styleopacity = "0";
-        document.getElementById('players').style.marginLeft = "150vh";
-        document.getElementById('gameroomON').style.zIndex = "-1";
-        buttonplayersState = false;
-    }
 }

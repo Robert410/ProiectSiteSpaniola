@@ -5,6 +5,7 @@
     <meta charset = "UTF-8">
     <meta name = "viewport" content = "width=device-width, initial-scale=1.0">
     <meta http-equiv = "X-UA-Compatible" content = "ie=edge">
+
     <link rel = "stylesheet" href = "CSS/login.css">
 
     <link rel="apple-touch-icon" sizes="180x180" href="imagini/tab/">
@@ -12,12 +13,15 @@
     <link rel="icon" type="image/png" sizes="16x16" href="imagini/tab//favicon-16x16.png">
     <link rel="manifest" href="imagini/tab//site.webmanifest">
     <link rel="mask-icon" href="imagini/tab//safari-pinned-tab.svg" color="#5bbad5">
+
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
 
     <title> Log-in </title>
 
-    <script src = "JS/functii.js"> </script>
+    <script src="JS/functii.js"> </script>
+    <script src="JS/information_popup.js"></script>
+    <script src="JS/gameroom_information.js"></script>
 
     <!-- script for WEBSOCKETS -->
     <script>
@@ -43,21 +47,6 @@
                 }
             }
         }
-    </script>
-
-    <!-- DEBUG CONSOLE: html for debug purposes only -->
-    <textarea title="Chat Log" id="log" readonly
-              style="display: none; width: 100%; height: 100px; resize: none; margin: 0; padding: 0; border: 0;"> </textarea>
-    <input title="Chat Input" id="input" type="text" style="display: none; width: 100%; border-width: 1px 0 1px 0;" autofocus/>
-
-    <!-- script for the DEBUG CONSOLE -->
-    <script>
-        document.getElementById("input").addEventListener("keyup", function (event) {
-            if (event.keyCode === 13) {
-                ws.send(event.target.value);
-                event.target.value = "";
-            }
-        });
     </script>
 
     <!-- DEBUG CONSOLE: html for debug purposes only -->

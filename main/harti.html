@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
+    <link rel="stylesheet" href="CSS/style.css">
+
     <title>Harti</title>
 
     <link rel="apple-touch-icon" sizes="180x180" href="imagini/tab/">
@@ -13,20 +15,24 @@
     <link rel="icon" type="image/png" sizes="16x16" href="imagini/tab//favicon-16x16.png">
     <link rel="manifest" href="imagini/tab//site.webmanifest">
     <link rel="mask-icon" href="imagini/tab//safari-pinned-tab.svg" color="#5bbad5">
+
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
+
+    <script src="jquery-2.1.4.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
     <link rel="stylesheet" href="CSS/harti.css">
     <link rel="stylesheet" href="CSS/app.css">
 
     <script src="JS/functii.js"></script>
     <script type="text/javascript" src="JS/main.js"></script>
-    <script type="text/javascript" src="JS/mapQuizFunctions.js"></script>
+    <script type="text/javascript" src="JS/map_quiz_functions.js"></script>
+    <script src="JS/websockets.js"></script>
+    <script src="JS/information_popup.js"></script>
+    <script src="JS/gameroom_information.js"></script>
 
-    <script src="jquery-2.1.4.js"></script>
-    <script src="functii.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <link rel="stylesheet" href="CSS/style.css">
+    <script src="JS/storage/storage_map.js"></script>
 </head>
 
 <body style="background: #112F68; overflow: hidden;" class="noselect transitionpage" id="ShowPage">
@@ -39,9 +45,6 @@
         ws.send("%" + "harti");
     }
 
-    let debugWithoutWS = true;
-    let consoleMode = false;
-
     if (!debugWithoutWS) {
         var ws = new WebSocket(wsString);
 
@@ -51,60 +54,36 @@
             code = event.data.toString().substr(0, 2);
             value = event.data.toString().substr(2);
 
-            if (code === "VV") {
-                wsValidity = true;
-                wsInitializationInterval = clearInterval(wsInitializationInterval);
-            }   else
-            if (code === "ID") {
-                globalID = value;
-                updateGlobal();
-            }
-            if (code === "GS") {
-                initializeSet(value);
-                updateGameroomList();
-            }   else
-            if (code === "GD") {
-                addGRName(value);
-                showInformation(value + " a intrat în gameroom!");
-                updateGameroomList();
-            }   else
-            if (code === "GM") {
-                resetGRSet();
-                updateGameroomList();
-            }   else
-            if (code === "GX") {
-                removeGRName(value);
-                showInformation(value + " a ieșit din gameroom!");
-                updateGameroomList();
-            }   else
-            if (code === "QB") {
+            if (code === "QB") {            // quiz begin
                 if (consoleMode) document.getElementById("log").value += "the quiz should start" + "\n";
                 if (consoleMode) document.getElementById("log").value += event.data.toString().substr(2) + "\n";
                 initializeQuestions(value);
                 startQuiz();
-            } else if (code === "QR") {
+            } else if (code === "QR") {     // quiz restart
                 if (consoleMode) document.getElementById("log").value += "the quiz should restart" + "\n";
                 initializeQuestions(value);
                 restartQuiz();
-            } else if (code === "QA") {
-                abortQuiz();                          /* !!! */
-            } else if (code === "QP") {               /* !!! */
+            } else if (code === "QA") {     // request to abort the quiz
+                showScore();
+            } else if (code === "QP") {     // leaderboard data
                 if (consoleMode) document.getElementById("log").value += "received leadeboard data!" + "\n";
-                setLeaderboardRawData(value);
-            } else if (code === "QK") {
+                updateLeaderboardData(value);
+                updateLeaderboardHTML();
+            } else if (code === "QK") {     // ranking update (#1/5, #3/5)
                 updateRanking(value);
             } else if (code === "TJ") {
-                toggleJob();
+                q_toggleJob();
             } else if (code === "TQ") {
-                toggleGame();                         /* !!! */
+                q_toggleGame();
             } else if (code === "TA") {
-                toggleAlone();
-            } else
-            if (code === "XX") {
-                redirectToLogin();
-            } else
-            if (code === "PP") {
-                showInformation(ppArr[parseInt(value)-1]);
+                q_toggleAlone();
+            }
+            else {
+                checkGeneralEvents(code, value);
+                checkGameroomEvents(code, value);
+                if (code[0] === 'G') {
+                    updateLeaderboardHTML();
+                }
             }
         }
     }
@@ -198,11 +177,11 @@
     <p id="okkfalse" class="corectfals">Greșit</p>
 
     <button class="borderBox" style="left: 25vw; top:45vh; display: block;color: white;"
-            onclick="startQuizButtonPress(), IndexRestart()" id="butonstart">
+            onclick="startQuizButtonPress()" id="butonstart">
         START
         <span class="textBox"></span></button>
     <button class="borderBox" style="left: 20vw; top: 80vh;color: white;"
-            onclick="restartQuizButtonPress(), IndexRestart('.round')" id="butonrestart">
+            onclick="restartQuizButtonPress()" id="butonrestart">
         Restart
         <span class="textBox"></span></button>
     <div class="leaderboard" id="pergamentRezultate">

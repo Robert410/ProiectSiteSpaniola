@@ -127,7 +127,7 @@ public class GameroomManager {
         int prevID = UserSession.getStats(session).getID();
         if (prevID != 0) {
             //  GD - remove a name from the gameroom name set
-            sendExclusiveMessage(prevID, UserSession.getStats(session), "GX" + UserSession.getStats(session).getName());
+            sendExclusiveMessage(prevID, UserSession.getStats(session), "GX" + UserSession.getStats(session).getStrID());
         }
     }
 
@@ -135,7 +135,7 @@ public class GameroomManager {
     public static String getNamesRawString(Integer ID) {
         String ans = "";
         for (UserStats peer : gameroomMap.get(ID)) {
-            ans += peer.getName() + "#";
+            ans += peer.getName() + "!" + peer.getStrID() + "#";
         }   return ans;
     }
 

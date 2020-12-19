@@ -1,25 +1,30 @@
 <html>
 
 <head>
-<meta charset="utf-8">
+    <meta charset="utf-8">
 
-<link rel="stylesheet" type="text/css" href="CSS/bingo.css" />
-<link rel="stylesheet" href="CSS/style.css" />
+    <link rel="stylesheet" type="text/css" href="CSS/bingo.css" />
+    <link rel="stylesheet" href="CSS/style.css" />
 
-<title>Bingo</title>
+    <title>Bingo</title>
 
-<link rel="apple-touch-icon" sizes="180x180" href="imagini/tab/">
-<link rel="icon" type="image/png" sizes="32x32" href="imagini/tab//favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="imagini/tab//favicon-16x16.png">
-<link rel="manifest" href="imagini/tab//site.webmanifest">
-<link rel="mask-icon" href="imagini/tab//safari-pinned-tab.svg" color="#5bbad5">
-<meta name="msapplication-TileColor" content="#da532c">
-<meta name="theme-color" content="#ffffff">
+    <link rel="apple-touch-icon" sizes="180x180" href="imagini/tab/">
+    <link rel="icon" type="image/png" sizes="32x32" href="imagini/tab//favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="imagini/tab//favicon-16x16.png">
+    <link rel="manifest" href="imagini/tab//site.webmanifest">
+    <link rel="mask-icon" href="imagini/tab//safari-pinned-tab.svg" color="#5bbad5">
 
-<script type="text/javascript" src="JS/bingo.js"></script>
-<script type="text/javascript" src="JS/main.js"></script>
-<script type="text/javascript" src="JS/functii.js"></script>
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
 
+    <script type="text/javascript" src="JS/bingo.js"></script>
+    <script type="text/javascript" src="JS/main.js"></script>
+    <script type="text/javascript" src="JS/functii.js"></script>
+    <script src="JS/information_popup.js"></script>
+    <script src="JS/gameroom_information.js"></script>
+    <script src="JS/websockets.js"></script>
+
+    <script type="text/javascript" src="JS/storage/storage_bingo.js"></script>
 </head>
 
 <textarea title="Chat Log" id="log" readonly
@@ -34,9 +39,6 @@
         ws.send("%" + "bingo");
     }
 
-    let debugWithoutWS = true;
-    let consoleMode = false;
-
     if (!debugWithoutWS) {
         var ws = new WebSocket(wsString);
 
@@ -46,32 +48,9 @@
             code = event.data.toString().substr(0, 2);
             value = event.data.toString().substr(2);
 
-            if (code === "VV") {
-                wsValidity = true;
-                wsInitializationInterval = clearInterval(wsInitializationInterval);
-            }   else
-            if (code === "GS") {
-                initializeSet(value);
-                updateGameroomList();
-            }   else
-            if (code === "GD") {
-                addGRName(value);
-                showInformation(value + " a intrat în gameroom!");
-                updateGameroomList();
-            }   else
-            if (code === "GM") {
-                resetGRSet();
-                updateGameroomList();
-            }   else
-            if (code === "GX") {
-                removeGRName(value);
-                showInformation(value + " a ieșit din gameroom!");
-                updateGameroomList();
-            }   else
-            if (code === "ID") {
-                globalID = value;
-                updateGlobal();
-            } else if (code === "QB") {
+            if (code === "QB") {
+                let numere = json_bingoData[selected_bingo]["data"]
+
                 let arr = value.split("#");
                 for (let i=1; i<=16; ++i)
                     anum[i] = parseInt(arr[i-1]);
@@ -82,11 +61,10 @@
             } else if (code === "QF") {
                 endBingo();
                 document.getElementById('poll').innerHTML = value;
-            } if (code === "XX") {
-                redirectToLogin();
-            } else
-            if (code === "PP") {
-                showInformation(ppArr[parseInt(value)-1]);
+            }
+            else {
+                checkGeneralEvents(code, value);
+                checkGameroomEvents(code, value);
             }
         }
 

@@ -84,7 +84,7 @@ public class AuthenticationHelper implements HelperPrimitive {
                                 //  GS - initialization of the gameroom name set on the clientside
                                 session.getBasicRemote().sendText("GS" + GameroomManager.getNamesRawString(ID));
                                 //  GD - updates the gameroom name set with another game
-                                GameroomManager.sendExclusiveMessage(ID, UserSession.getStats(session),"GD" + UserSession.getStats(session).getName());
+                                GameroomManager.sendExclusiveMessage(ID, UserSession.getStats(session),"GD" + UserSession.getStats(session).getName() + "!" + UserSession.getStats(session).getStrID());
                             } else  session.getBasicRemote().sendText(badIDAnswer);
                         } catch (RuntimeException e) {
                             session.getBasicRemote().sendText(badIDAnswer);
@@ -96,8 +96,6 @@ public class AuthenticationHelper implements HelperPrimitive {
             UserSession.debugPrint(session,"Query ID");
         }   else
         if (message.charAt(0) == queryJob) {
-            session.getBasicRemote().sendText("VV");
-                //  "VV": message representing that the websocket connection is properly established and all required initial information was sent
             message = message.substring(1);
 
             if (message.charAt(0) == playerSignal) UserSession.getStats(session).setJob(false);
@@ -109,6 +107,8 @@ public class AuthenticationHelper implements HelperPrimitive {
                 UserSession.getStats(session).setJob(true);
             }
 
+            session.getBasicRemote().sendText("VV" + UserSession.getStats(session).getStrID());
+            //  "VV": message representing that the websocket connection is properly established and all required initial information was sent
             UserSession.debugPrint(session,"Query Job");
         }
     }
